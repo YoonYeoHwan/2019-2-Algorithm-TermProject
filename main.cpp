@@ -7,7 +7,7 @@ int main(){
         bool checkF1 = false;
 
         if(level==10){
-            g.ending(level);
+            g.ending();
             getch();
             endwin();
             break;
@@ -53,11 +53,11 @@ int main(){
             }
         }
         if(level!=10 && checkF1==false) {
-            g.clearMap(level);
+            g.clearMap();
             g.reloadMap();
         }
         if(g.getlife()==0){
-            g.gameover(level);            
+            g.gameover();            
             getch();
             break;
         }

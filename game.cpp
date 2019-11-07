@@ -313,14 +313,12 @@ int PushBoxGame::getlife(){
     return s.getLife();
 }
 
-void PushBoxGame::clearMap(int level) {
-    int nowScore = (level * 200 + s.getLife() * 200) - (s.getPush() * 5 + s.getStep() * 3);
+void PushBoxGame::clearMap() {
     win_clear=newwin(27,27,0,0);
     wattron(win_clear,COLOR_PAIR(2));
     wborder(win_clear,'*','*','*','*','*','*','*','*');
     mvwprintw(win_clear, 5, 6, "CONGRATULATIONS!");
-    mvwprintw(win_clear, 12, 7, "YOUR SCORE IS");
-    mvwprintw(win_clear, 14, 9, "%d POINT", nowScore);
+    mvwprintw(win_clear, 12, 8, "Stage Clear");
     mvwprintw(win_clear, 20, 7, "PRESS ANY KEY");
     mvwprintw(win_clear, 22, 5, "TO PLAY NEXT LEVEL");
     wattroff(win_clear,COLOR_PAIR(2));        
@@ -357,15 +355,12 @@ void PushBoxGame::reloadMap() {
     wrefresh(win_step);
 }
 
-void PushBoxGame::ending(int level) {
-    int nowScore = (level * 200 + s.getLife() * 200) - (s.getPush() * 5 + s.getStep() * 3);
+void PushBoxGame::ending() {
     win_end=newwin(27,27,0,0);
     wattron(win_end,COLOR_PAIR(2));
     wborder(win_end,'*','*','*','*','*','*','*','*');
     mvwprintw(win_end, 5, 6, "CONGRATULATIONS!");
     mvwprintw(win_end, 6, 4, "YOU CLEAR ALL LEVEL!");
-    mvwprintw(win_end, 12, 7, "YOUR SCORE IS");
-    mvwprintw(win_end, 14, 9, "%d POINT", nowScore);
     mvwprintw(win_end, 20, 7, "PRESS ANY KEY");
     mvwprintw(win_end, 22, 8, "TO EXIT GAME");
     wattroff(win_end,COLOR_PAIR(2));        
@@ -374,14 +369,11 @@ void PushBoxGame::ending(int level) {
     getch();
 }
 
-void PushBoxGame::gameover(int level) {
-    int nowScore = (level * 200 + s.getLife() * 200) - (s.getPush() * 5 + s.getStep() * 3);
+void PushBoxGame::gameover() {
     win_over=newwin(27,27,0,0);
     wattron(win_over,COLOR_PAIR(2));
     wborder(win_over,'*','*','*','*','*','*','*','*');
     mvwprintw(win_over, 5, 9, "GAME OVER!");
-    mvwprintw(win_over, 12, 4, "YOUR TOTAL SCORE IS");
-    mvwprintw(win_over, 14, 9, "%d POINT", nowScore);
     mvwprintw(win_over, 20, 7, "PRESS ANY KEY");
     mvwprintw(win_over, 22, 8, "TO EXIT GAME");
     wattroff(win_over,COLOR_PAIR(2));        

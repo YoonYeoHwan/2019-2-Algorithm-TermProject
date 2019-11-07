@@ -88,8 +88,8 @@ public:
     void lifeRefresh();
     int getlife();
     int (*getMap())[10];
-    void clearMap(int level);
+    void clearMap();
     void reloadMap();
-    void ending(int level);
-    void gameover(int level);
+    void ending();
+    void gameover();
 };
