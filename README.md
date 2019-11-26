@@ -1,4 +1,7 @@
 # 2019-2-Algorithm-TermProject
 
-## Report Docs Link
-https://docs.google.com/document/d/13nNYS--1k-rfaw6xOjit0IWmcq_9_yrqFFHT7gM9T2g/edit
+### Report - 제안서
+https://docs.google.com/document/d/1NUaYuZj_qPV_-SQSYXU-jSbH1Ll5ZLIw8FWzQWWQTxk/edit?usp=sharing
+
+### Report - 결과 보고
+https://docs.google.com/document/d/1AG2GtWVlp_pjP-6neBNcJP4tofG1k2V8EaRuEjsktNM/edit?usp=sharing
