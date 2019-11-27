@@ -1,12 +1,12 @@
 #include <ncurses.h>
-#include "PushBoxGame.h"
+#include "game.h"
 #include "map.h"
 
-int (*PushBoxGame::getMap())[10] {
+int (*Game::getMap())[10] {
     return map_arr;
 }
 
-void PushBoxGame::setMap(int level) {
+void Game::setMap(int level) {
     if (level == 1) {
         m.set_map(map_arr, level, a, b, goalCount);
         mvwprintw(win_level, 2, 3, "%d", level);
@@ -50,7 +50,7 @@ void PushBoxGame::setMap(int level) {
     }
 }
 
-void PushBoxGame::newGame(int map[][10]) {
+void Game::newGame(int map[][10]) {
     game_map = newwin(12, 14, 10, 7);
     wborder(game_map, '|', '|', '-', '-', '+', '+', '+', '+');
     for (int i = 0; i <= 9; i++) {
@@ -68,7 +68,7 @@ void PushBoxGame::newGame(int map[][10]) {
     wrefresh(game_map);
 }
 
-void PushBoxGame::moveUP(int map[][10]) {
+void Game::moveUP(int map[][10]) {
     int up = a - 2;
     int up2 = a - 3;
     if (map[up][b - 3] == Wall) return;
@@ -116,7 +116,7 @@ void PushBoxGame::moveUP(int map[][10]) {
     wrefresh(game_map);
 }
 
-void PushBoxGame::moveDOWN(int map[][10]) {
+void Game::moveDOWN(int map[][10]) {
     int down = a;
     int down2 = a + 1;
     if (map[down][b - 3] == Wall) return;
@@ -165,7 +165,7 @@ void PushBoxGame::moveDOWN(int map[][10]) {
     wrefresh(game_map);
 }
 
-void PushBoxGame::moveLEFT(int map[][10]) {
+void Game::moveLEFT(int map[][10]) {
     int left = b - 4;
     int left2 = b - 5;
     if (map[a - 1][left] == Wall) return;
@@ -213,7 +213,7 @@ void PushBoxGame::moveLEFT(int map[][10]) {
     wrefresh(game_map);
 }
 
-void PushBoxGame::moveRIGHT(int map[][10]) {
+void Game::moveRIGHT(int map[][10]) {
     int right = b - 2;
     int right2 = b - 1;
     if (map[a - 1][right] == Wall) return;
@@ -261,7 +261,7 @@ void PushBoxGame::moveRIGHT(int map[][10]) {
     wrefresh(game_map);
 }
 
-bool PushBoxGame::finishGame() {
+bool Game::finishGame() {
     int cnt = 0;
     for (int i = 0; i < 10; i++) {
         for (int j = 0; j < 10; j++) {
@@ -272,27 +272,27 @@ bool PushBoxGame::finishGame() {
     else return false;
 }
 
-void PushBoxGame::stepRefresh(WINDOW *win, int step) {
+void Game::stepRefresh(WINDOW *win, int step) {
     mvwprintw(win, 2, 3, "%d", step);
     wrefresh(win_step);
 }
 
-void PushBoxGame::pushRefresh(WINDOW *win, int push) {
+void Game::pushRefresh(WINDOW *win, int push) {
     mvwprintw(win, 2, 3, "%d", push);
     wrefresh(win_push);
 }
 
-void PushBoxGame::lifeRefresh() {
+void Game::lifeRefresh() {
     s.lifeDown();
     mvwprintw(win_life, 2, 3, "%d", s.getLife());
     wrefresh(win_life);
 }
 
-int PushBoxGame::getlife() {
+int Game::getlife() {
     return s.getLife();
 }
 
-void PushBoxGame::clearMap() {
+void Game::clearMap() {
     win_clear = newwin(27, 27, 0, 0);
     wattron(win_clear, COLOR_PAIR(2));
     wborder(win_clear, '*', '*', '*', '*', '*', '*', '*', '*');
@@ -307,7 +307,7 @@ void PushBoxGame::clearMap() {
     getch();
 }
 
-void PushBoxGame::reloadMap() {
+void Game::reloadMap() {
     resize_term(27, 27);
     attron(COLOR_PAIR(2));
     border('*', '*', '*', '*', '*', '*', '*', '*');
@@ -334,7 +334,7 @@ void PushBoxGame::reloadMap() {
     wrefresh(win_step);
 }
 
-void PushBoxGame::ending() {
+void Game::ending() {
     win_end = newwin(27, 27, 0, 0);
     wattron(win_end, COLOR_PAIR(2));
     wborder(win_end, '*', '*', '*', '*', '*', '*', '*', '*');
@@ -348,7 +348,7 @@ void PushBoxGame::ending() {
     getch();
 }
 
-void PushBoxGame::gameover() {
+void Game::gameover() {
     win_over = newwin(27, 27, 0, 0);
     wattron(win_over, COLOR_PAIR(2));
     wborder(win_over, '*', '*', '*', '*', '*', '*', '*', '*');

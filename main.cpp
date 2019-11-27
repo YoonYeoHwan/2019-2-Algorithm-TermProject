@@ -1,7 +1,7 @@
-#include "PushBoxGame.h"
+#include "game.h"
 
 int main() {
-    PushBoxGame g;
+    Game g;
     int level = 1;
     while (1) {
         bool checkF1 = false;
@@ -49,7 +49,7 @@ int main() {
                 }
             }
         }
-        if (level != 10 && checkF1 == false) {
+        if (level != 10 && !checkF1) {
             g.clearMap();
             g.reloadMap();
         }
