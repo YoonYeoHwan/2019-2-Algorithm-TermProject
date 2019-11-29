@@ -3,6 +3,13 @@
 #include <string.h>
 #include <iostream>
 #include <ncurses.h>
+#include <stack>
+
+typedef struct STEP {
+    std::string map;
+    int y;
+    int x;
+} _t_step;
 
 enum {
     SPACE, WALL, BOX, GOAL, OUT, BOX_ON_GOAL
@@ -21,6 +28,7 @@ private:
     WINDOW *win_end;
     WINDOW *win_life;
     WINDOW *win_over;
+    std::stack<_t_step> stack_step;
     int map_arr[10][10];
     int a;
     int b;
@@ -64,6 +72,10 @@ public:
         wrefresh(win_step);
         wrefresh(win_life);
     }
+
+    int undo(void);
+
+    void push_step(void);
 
     void setMap(int level);
 

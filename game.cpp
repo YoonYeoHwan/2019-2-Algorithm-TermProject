@@ -1,6 +1,7 @@
 #include <ncurses.h>
 #include "game.h"
 #include "map.h"
+#include <sstream>
 
 using namespace std;
 
@@ -54,11 +55,78 @@ std::string Game::getStrMap(void) {
     return str_map;
 }
 
+int Game::undo(void) {
+    if (stack_step.empty()) return -1;
+    if (stack_step.size() == 1) {
+        _t_step step = stack_step.top();
+
+//        a = step.y + 0;
+//        b = step.x + 0;
+
+        return -1;
+    }
+
+    _t_step step = stack_step.top();
+    stack_step.pop();
+
+//    cout << step.y << " " << step.x << endl;
+
+    stringstream ss(step.map);
+    string line;
+
+    a = step.y + 1;
+    b = step.x + 3;
+
+    int temp_row, temp_col;
+
+    int row = 0;
+
+    game_map = newwin(12, 14, 10, 7);
+    wborder(game_map, '|', '|', '-', '-', '+', '+', '+', '+');
+
+    while (getline(ss, line, '\n')) {
+        for (int col = 0; col < line.length(); ++col) {
+            temp_row = row + 1;
+            temp_col = col + 3;
+
+            if (line[col] == '#') {
+                map_arr[temp_row][temp_col] = WALL;
+                wattron(game_map, COLOR_PAIR(1));
+                mvwprintw(game_map, temp_row, temp_col, "#");
+                wattroff(game_map, COLOR_PAIR(1));
+            } else if (line[col] == '$') {
+                map_arr[temp_row][temp_col] = BOX;
+                mvwprintw(game_map, temp_row, temp_col, "$");
+            } else if (line[col] == ' ') {
+                map_arr[temp_row][temp_col] = SPACE;
+                mvwprintw(game_map, temp_row, temp_col, " ");
+            } else if (line[col] == '.') {
+                map_arr[temp_row][temp_col] = GOAL;
+                mvwprintw(game_map, temp_row, temp_col, ".");
+            } else if (line[col] == '@') {
+                mvwprintw(game_map, temp_row, temp_col, "@");
+            }
+        }
+        row++;
+    }
+
+    mvwprintw(game_map, a, b, "@");
+    wrefresh(game_map);
+//    cout << a << "-" << b << endl;
+
+    return 1;
+}
+
+void Game::push_step(void) {
+    _t_step step = {getStrMap(), a, b};
+    stack_step.push(step);
+}
+
 void Game::newGame(int map[][10]) {
     game_map = newwin(12, 14, 10, 7);
     wborder(game_map, '|', '|', '-', '-', '+', '+', '+', '+');
-    for (int i = 0; i <= 9; i++) {
-        for (int j = 0; j <= 9; j++) {
+    for (int i = 0; i < 10; i++) {
+        for (int j = 0; j < 10; j++) {
             if (map[i][j] == 1) {
                 wattron(game_map, COLOR_PAIR(1));
                 mvwprintw(game_map, i + 1, j + 3, "#");
@@ -118,6 +186,8 @@ void Game::moveUP(int map[][10]) {
     stepRefresh(win_step, s.getStep());
     pushRefresh(win_push, s.getPush());
     wrefresh(game_map);
+
+    this->push_step();
 }
 
 void Game::moveDOWN(int map[][10]) {
@@ -167,6 +237,8 @@ void Game::moveDOWN(int map[][10]) {
     stepRefresh(win_step, s.getStep());
     pushRefresh(win_push, s.getPush());
     wrefresh(game_map);
+
+    this->push_step();
 }
 
 void Game::moveLEFT(int map[][10]) {
@@ -215,6 +287,8 @@ void Game::moveLEFT(int map[][10]) {
     stepRefresh(win_step, s.getStep());
     pushRefresh(win_push, s.getPush());
     wrefresh(game_map);
+
+    this->push_step();
 }
 
 void Game::moveRIGHT(int map[][10]) {
@@ -263,6 +337,8 @@ void Game::moveRIGHT(int map[][10]) {
     stepRefresh(win_step, s.getStep());
     pushRefresh(win_push, s.getPush());
     wrefresh(game_map);
+
+    this->push_step();
 }
 
 bool Game::finishGame() {

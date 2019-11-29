@@ -13,8 +13,8 @@ using namespace std;
 int heuristics(const _t_state &cur_state) {
     queue <_t_state> valid_moves;
 
-    vector <pair<int, int>> boxes;
-    vector <vector<char>> level_map;
+    vector <pair<int, int> > boxes;
+    vector <vector<char> > level_map;
 
     stringstream ss(cur_state.state_str);
     string line;
@@ -236,7 +236,7 @@ int heuristics(const _t_state &cur_state) {
 queue <_t_state> gen_valid_states(const _t_state &cur_state) {
     queue <_t_state> valid_moves;
 
-    vector <vector<char>> new_level_map;
+    vector <vector<char> > new_level_map;
     _t_state new_state;
 
     stringstream ss(cur_state.state_str);
@@ -247,7 +247,7 @@ queue <_t_state> gen_valid_states(const _t_state &cur_state) {
     _t_player player;
     int row = 0;
 
-    vector <vector<char>> level_map;
+    vector <vector<char> > level_map;
     while (getline(ss, line, '\n')) {
         vector<char> temp;
         level_map.push_back(temp);
@@ -333,9 +333,16 @@ queue <_t_state> gen_valid_states(const _t_state &cur_state) {
     return valid_moves;
 }
 
+#define MODE 1
+
 _t_search_state a_start(_t_state &init_state) {
     deque <_t_state> open;
+
+#if MODE == 1
     vector <_t_state> closed;
+#else
+    set <std::string> closed;
+#endif
 
     _t_search_state report;
     report.rep_node_count = 0;
@@ -350,18 +357,21 @@ _t_search_state a_start(_t_state &init_state) {
     while (!open.empty()) {
         current_state = open.front();
         open.pop_front();
+
+#if MODE == 1
         closed.push_back(current_state);
+#else
+        closed.insert(current_state.state_str);
+#endif
 
 //        GOAL
-        if ((current_state.state_str.find_first_of('.')) == string::npos) {
-            if ((current_state.state_str.find_first_of('+')) == string::npos) {
-                if ((current_state.state_str.find_first_of('$')) == string::npos) {
-                    report.node = current_state;
-                    report.explored_count = closed.size();
-                    open.pop_front();
-                    break;
-                }
-            }
+        if ((current_state.state_str.find_first_of('.')) == string::npos &&
+            (current_state.state_str.find_first_of('+')) == string::npos &&
+            (current_state.state_str.find_first_of('$')) == string::npos) {
+            report.node = current_state;
+            report.explored_count = closed.size();
+            open.pop_front();
+            break;
         }
 
         queue <_t_state> valid_states = gen_valid_states(current_state);
@@ -375,19 +385,26 @@ _t_search_state a_start(_t_state &init_state) {
 
             _t_state temp_state = valid_states.front();
 
-            // 이미 확인한 또는 확인해야할 리스트에 있는지 확인
             for (it = open.begin(); it != open.end(); it++) {
                 if (it->state_str == temp_state.state_str) {
                     already_seen = true;
                     break;
                 }
             }
+
+#if MODE == 1
             for (itr = closed.begin(); itr != closed.end(); itr++) {
                 if (itr->state_str == temp_state.state_str) {
                     already_seen = true;
                     break;
                 }
             }
+#else
+            if (closed.find(temp_state.state_str) != closed.end()) {
+                already_seen = true;
+                break;
+            }
+#endif
 
             if (!already_seen) {
                 report.node_count++;
@@ -416,10 +433,11 @@ _t_search_state a_start(_t_state &init_state) {
 void auto_mode_game(void) {
     Game g;
 
-    int level = 8;
+    int level = 2;
 
     g.setMap(level);
     g.newGame(g.getMap());
+    g.push_step();
 
 //    Init state
     _t_state init_state;
@@ -438,7 +456,7 @@ void auto_mode_game(void) {
     _t_search_state final_stat = a_start(init_state);
     gettimeofday(&end, NULL);
 
-//    //substring used to remove ending ', ' in string
+////    //substring used to remove ending ', ' in string
     std::cout << "  Solution: " << std::endl;
     std::cout << "    "
               << final_stat.node.move_list.substr(0, (final_stat.node.move_list.size()))
@@ -452,10 +470,10 @@ void auto_mode_game(void) {
 //    std::cout << "    # of explored nodes: ";
 //    std::cout << final_stat.explored_count << std::endl;
 //    //report search algorithm runtime
-//    std::cout << "  Actual run time: ";
-//    sec = end.tv_sec - start.tv_sec;
-//    microsec = end.tv_usec - start.tv_usec;
-//    std::cout << (sec + (microsec / 1000000.0)) << " seconds" << std::endl;
+    std::cout << "  Actual run time: ";
+    sec = end.tv_sec - start.tv_sec;
+    microsec = end.tv_usec - start.tv_usec;
+    std::cout << (sec + (microsec / 1000000.0)) << " seconds" << std::endl;
 
     int pos = 0;
     int prev = 0;
@@ -476,8 +494,6 @@ void auto_mode_game(void) {
         if (0 <= pos && pos < length) {
             if (inputKey == KEY_RIGHT) {
                 pos++;
-            } else if (inputKey == KEY_LEFT) {
-                pos--;
             }
         }
 

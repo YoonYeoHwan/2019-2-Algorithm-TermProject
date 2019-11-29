@@ -10,6 +10,7 @@
 #include <deque>
 #include <vector>
 #include <queue>
+#include <set>
 
 #define INC_2019_2_ALGORITHM_TERMPROJECT_SOLVER_H
 
