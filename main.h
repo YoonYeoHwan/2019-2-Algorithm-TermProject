@@ -9,7 +9,6 @@ enum MODE {
 } _t_mode;
 
 MODE init_game(void) {
-
     WINDOW *win_start;
 
     initscr();
@@ -36,7 +35,8 @@ MODE init_game(void) {
     int inputKey = getch();
     delwin(win_start);
 
-    if(inputKey == 'u') return USER;
-    else if(inputKey == 's') return AUTO;
+    if (inputKey == 'u') return USER;
+    else if (inputKey == 's') return AUTO;
 
+    return AUTO;
 }

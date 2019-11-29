@@ -1,8 +1,8 @@
 //
 // Created by Gihyeon Yang on 2019/11/29.
 //
-
 #include "user.h"
+#include "game.h"
 
 void user_mode_game(void) {
     Game g;
@@ -66,8 +66,8 @@ void user_mode_game(void) {
             g.clearMap();
             g.reloadMap();
         }
-        if (g.getlife() == 0) {
-            g.gameover();
+        if (g.getLife() == 0) {
+            g.gameOver();
             getch();
             break;
         }

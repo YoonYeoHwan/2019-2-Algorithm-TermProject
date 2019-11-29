@@ -2,52 +2,64 @@
 #include "game.h"
 #include "map.h"
 
+using namespace std;
+
 int (*Game::getMap())[10] {
     return map_arr;
 }
 
 void Game::setMap(int level) {
-    if (level == 1) {
-        m.set_map(map_arr, level, a, b, goalCount);
-        mvwprintw(win_level, 2, 3, "%d", level);
-        wrefresh(win_level);
-    } else if (level == 2) {
-        m.set_map(map_arr, level, a, b, goalCount);
-        mvwprintw(win_level, 2, 3, "%d", level);
-        wrefresh(win_level);
-    } else if (level == 3) {
-        m.set_map(map_arr, level, a, b, goalCount);
-        mvwprintw(win_level, 2, 3, "%d", level);
-        wrefresh(win_level);
-    } else if (level == 4) {
-        m.set_map(map_arr, level, a, b, goalCount);
-        mvwprintw(win_level, 2, 3, "%d", level);
-        wrefresh(win_level);
-    } else if (level == 5) {
-        m.set_map(map_arr, level, a, b, goalCount);
-        mvwprintw(win_level, 2, 3, "%d", level);
-        wrefresh(win_level);
-    } else if (level == 6) {
-        m.set_map(map_arr, level, a, b, goalCount);
-        mvwprintw(win_level, 2, 3, "%d", level);
-        wrefresh(win_level);
-    } else if (level == 7) {
-        m.set_map(map_arr, level, a, b, goalCount);
-        mvwprintw(win_level, 2, 3, "%d", level);
-        wrefresh(win_level);
-    } else if (level == 8) {
-        m.set_map(map_arr, level, a, b, goalCount);
-        mvwprintw(win_level, 2, 3, "%d", level);
-        wrefresh(win_level);
-    } else if (level == 9) {
-        m.set_map(map_arr, level, a, b, goalCount);
-        mvwprintw(win_level, 2, 3, "%d", level);
-        wrefresh(win_level);
-    } else if (level == 10) {
-        m.set_map(map_arr, level, a, b, goalCount);
-        mvwprintw(win_level, 2, 3, "%d", level);
-        wrefresh(win_level);
+    m.set_map(map_arr, level, a, b, goalCount);
+#ifndef DEBUG_AUTO
+    mvwprintw(win_level, 2, 3, "%d", level);
+    wrefresh(win_level);
+#endif
+}
+
+std::string Game::getStrMap(void) {
+    string str_map = "";
+
+    int y = a - 1;
+    int x = b - 3;
+
+    for (int row = 0; row < 10; ++row) {
+        for (int col = 0; col < 10; ++col) {
+            cout << this->map_arr[row][col];
+        }
+        cout << endl;
     }
+    cout << endl;
+
+    for (int row = 0; row < 10; ++row) {
+        for (int col = 0; col < 10; ++col) {
+            if (y == row && x == col) {
+                str_map += "@";
+            } else {
+                switch (this->map_arr[row][col]) {
+                    case Space:
+                        str_map += " ";
+                        break;
+                    case Wall:
+                        str_map += "#";
+                        break;
+                    case Box:
+                        str_map += "$";
+                        break;
+                    case Goal:
+                        str_map += ".";
+                        break;
+                    case 4:
+                        str_map += "#";
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+        str_map += "\n";
+    }
+
+    return str_map;
 }
 
 void Game::newGame(int map[][10]) {
@@ -288,7 +300,7 @@ void Game::lifeRefresh() {
     wrefresh(win_life);
 }
 
-int Game::getlife() {
+int Game::getLife() {
     return s.getLife();
 }
 
@@ -348,7 +360,7 @@ void Game::ending() {
     getch();
 }
 
-void Game::gameover() {
+void Game::gameOver() {
     win_over = newwin(27, 27, 0, 0);
     wattron(win_over, COLOR_PAIR(2));
     wborder(win_over, '*', '*', '*', '*', '*', '*', '*', '*');

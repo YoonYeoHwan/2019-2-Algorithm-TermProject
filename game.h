@@ -1,7 +1,10 @@
 #include "map.h"
 #include "score.h"
 #include <string.h>
+#include <iostream>
 #include <ncurses.h>
+
+#define DEBUG_AUTO
 
 enum {
     Space, Wall, Box, Goal, Out, BoxOnGoal
@@ -26,6 +29,7 @@ private:
     int goalCount;
 public:
     Game() {
+#ifndef DEBUG_AUTO
         initscr();
         keypad(stdscr, TRUE);
         curs_set(0);
@@ -62,6 +66,7 @@ public:
         wrefresh(win_push);
         wrefresh(win_step);
         wrefresh(win_life);
+#endif
     }
 
     void setMap(int level);
@@ -84,9 +89,11 @@ public:
 
     void lifeRefresh();
 
-    int getlife();
+    int getLife();
 
     int (*getMap())[10];
+
+    std::string getStrMap();
 
     void clearMap();
 
@@ -94,5 +101,5 @@ public:
 
     void ending();
 
-    void gameover();
+    void gameOver();
 };

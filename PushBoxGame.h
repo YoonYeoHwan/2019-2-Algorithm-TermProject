@@ -101,7 +101,7 @@ public:
 
     void lifeRefresh();
 
-    int getlife();
+    int getLife();
 
     int (*getMap())[10];
 
@@ -111,5 +111,5 @@ public:
 
     void ending();
 
-    void gameover();
+    void gameOver();
 };

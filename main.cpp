@@ -8,11 +8,8 @@ int main() {
 
     if (command == USER) {
         user_mode_game();
-    }
-
-    else if (command == AUTO){
+    } else if (command == AUTO) {
         auto_mode_game();
     }
-
     return 0;
 }
