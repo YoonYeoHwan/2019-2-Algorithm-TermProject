@@ -41,8 +41,10 @@ public:
         wattroff(win_start, COLOR_PAIR(2));
         wattron(win_start, COLOR_PAIR(2));
         mvwprintw(win_start, 4, 7, "PUSH BOX GAME");
-        mvwprintw(win_start, 12, 7, "PRESS ANY KEY");
-        mvwprintw(win_start, 14, 7, "TO START GAME");
+        mvwprintw(win_start, 12, 7, "PRESS \"u\" KEY");
+        mvwprintw(win_start, 14, 7, "TO START USER MODE");
+        mvwprintw(win_start, 22, 7, "PRESS \"s\" KEY");
+        mvwprintw(win_start, 24, 7, "TO START SOLVER MODE");
         wattroff(win_start, COLOR_PAIR(2));
         refresh();
         wrefresh(win_start);
