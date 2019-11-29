@@ -441,7 +441,7 @@ void auto_mode_game(void) {
     //substring used to remove ending ', ' in string
     std::cout << "  Solution: " << std::endl;
     std::cout << "    "
-              << final_stat.node.move_list.substr(0, (final_stat.node.move_list.size() - 2))
+              << final_stat.node.move_list.substr(0, (final_stat.node.move_list.size()))
               << std::endl;
     std::cout << "    # of nodes generated: ";
     std::cout << final_stat.node_count << std::endl;

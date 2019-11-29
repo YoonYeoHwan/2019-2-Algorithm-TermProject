@@ -4,10 +4,10 @@
 #include <iostream>
 #include <ncurses.h>
 
-#define DEBUG_AUTO
+//#define DEBUG_AUTO
 
 enum {
-    Space, Wall, Box, Goal, Out, BoxOnGoal
+    SPACE, WALL, BOX, GOAL, OUT, BOX_ON_GOAL
 };
 
 class Game {

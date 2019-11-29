@@ -36,16 +36,16 @@ std::string Game::getStrMap(void) {
                 str_map += "@";
             } else {
                 switch (this->map_arr[row][col]) {
-                    case Space:
+                    case SPACE:
                         str_map += " ";
                         break;
-                    case Wall:
+                    case WALL:
                         str_map += "#";
                         break;
-                    case Box:
+                    case BOX:
                         str_map += "$";
                         break;
-                    case Goal:
+                    case GOAL:
                         str_map += ".";
                         break;
                     case 4:
@@ -83,43 +83,43 @@ void Game::newGame(int map[][10]) {
 void Game::moveUP(int map[][10]) {
     int up = a - 2;
     int up2 = a - 3;
-    if (map[up][b - 3] == Wall) return;
-    else if (map[up][b - 3] == Box) {
-        if (map[up2][b - 3] == Wall) return;
-        else if (map[up2][b - 3] == Box || map[up2][b - 3] == BoxOnGoal) return;
+    if (map[up][b - 3] == WALL) return;
+    else if (map[up][b - 3] == BOX) {
+        if (map[up2][b - 3] == WALL) return;
+        else if (map[up2][b - 3] == BOX || map[up2][b - 3] == BOX_ON_GOAL) return;
         else {
-            if (map[up2][b - 3] == Goal) {
+            if (map[up2][b - 3] == GOAL) {
                 s.pushUp();
                 mvwprintw(game_map, a - 2, b, "*");
-                map[up2][b - 3] = BoxOnGoal;
-                map[up][b - 3] = Space;
+                map[up2][b - 3] = BOX_ON_GOAL;
+                map[up][b - 3] = SPACE;
             } else {
                 s.pushUp();
                 mvwprintw(game_map, a - 2, b, "*");
-                map[up2][b - 3] = Box;
-                map[up][b - 3] = Space;
+                map[up2][b - 3] = BOX;
+                map[up][b - 3] = SPACE;
             }
         }
-    } else if (map[up][b - 3] == BoxOnGoal) {
-        if (map[up2][b - 3] == Wall) return;
-        else if (map[up2][b - 3] == Box || map[up2][b - 3] == BoxOnGoal) return;
+    } else if (map[up][b - 3] == BOX_ON_GOAL) {
+        if (map[up2][b - 3] == WALL) return;
+        else if (map[up2][b - 3] == BOX || map[up2][b - 3] == BOX_ON_GOAL) return;
         else {
-            if (map[up2][b - 3] == Goal) {
+            if (map[up2][b - 3] == GOAL) {
                 s.pushUp();
                 mvwprintw(game_map, a - 2, b, "*");
-                map[up2][b - 3] = BoxOnGoal;
-                map[up][b - 3] = Goal;
+                map[up2][b - 3] = BOX_ON_GOAL;
+                map[up][b - 3] = GOAL;
             } else {
                 s.pushUp();
                 mvwprintw(game_map, a - 2, b, "*");
-                map[up2][b - 3] = Box;
-                map[up][b - 3] = Goal;
+                map[up2][b - 3] = BOX;
+                map[up][b - 3] = GOAL;
             }
         }
 
     }
-    if (map[a - 1][b - 3] == Goal) mvwprintw(game_map, a, b, "@");
-    else if (map[a - 1][b - 3] == Space) mvwprintw(game_map, a, b, " ");
+    if (map[a - 1][b - 3] == GOAL) mvwprintw(game_map, a, b, "@");
+    else if (map[a - 1][b - 3] == SPACE) mvwprintw(game_map, a, b, " ");
     a--;
     s.stepUp();
     mvwprintw(game_map, a, b, "O");
@@ -131,44 +131,44 @@ void Game::moveUP(int map[][10]) {
 void Game::moveDOWN(int map[][10]) {
     int down = a;
     int down2 = a + 1;
-    if (map[down][b - 3] == Wall) return;
-    else if (map[down][b - 3] == Box) {
-        if (map[down2][b - 3] == Wall) return;
-        else if (map[down2][b - 3] == Box || map[down2][b - 3] == BoxOnGoal) return;
+    if (map[down][b - 3] == WALL) return;
+    else if (map[down][b - 3] == BOX) {
+        if (map[down2][b - 3] == WALL) return;
+        else if (map[down2][b - 3] == BOX || map[down2][b - 3] == BOX_ON_GOAL) return;
         else {
-            if (map[down2][b - 3] == Goal) {
+            if (map[down2][b - 3] == GOAL) {
                 s.pushUp();
                 mvwprintw(game_map, a + 2, b, "*");
-                map[down2][b - 3] = BoxOnGoal;
-                map[down][b - 3] = Space;
+                map[down2][b - 3] = BOX_ON_GOAL;
+                map[down][b - 3] = SPACE;
             } else {
                 s.pushUp();
                 mvwprintw(game_map, a + 2, b, "*");
-                map[down2][b - 3] = Box;
-                map[down][b - 3] = Space;
+                map[down2][b - 3] = BOX;
+                map[down][b - 3] = SPACE;
             }
         }
-    } else if (map[down][b - 3] == BoxOnGoal) {
-        if (map[down2][b - 3] == Wall) return;
-        else if (map[down2][b - 3] == Box || map[down2][b - 3] == BoxOnGoal) return;
+    } else if (map[down][b - 3] == BOX_ON_GOAL) {
+        if (map[down2][b - 3] == WALL) return;
+        else if (map[down2][b - 3] == BOX || map[down2][b - 3] == BOX_ON_GOAL) return;
         else {
-            if (map[down2][b - 3] == Goal) {
+            if (map[down2][b - 3] == GOAL) {
                 s.pushUp();
                 mvwprintw(game_map, a + 2, b, "*");
-                map[down2][b - 3] = BoxOnGoal;
-                map[down][b - 3] = Goal;
+                map[down2][b - 3] = BOX_ON_GOAL;
+                map[down][b - 3] = GOAL;
             } else {
                 s.pushUp();
                 mvwprintw(game_map, a + 2, b, "*");
-                map[down2][b - 3] = Box;
-                map[down][b - 3] = Goal;
+                map[down2][b - 3] = BOX;
+                map[down][b - 3] = GOAL;
             }
         }
 
     }
 
-    if (map[a - 1][b - 3] == Goal) mvwprintw(game_map, a, b, "@");
-    else if (map[a - 1][b - 3] == Space) mvwprintw(game_map, a, b, " ");
+    if (map[a - 1][b - 3] == GOAL) mvwprintw(game_map, a, b, "@");
+    else if (map[a - 1][b - 3] == SPACE) mvwprintw(game_map, a, b, " ");
     a++;
     s.stepUp();
     mvwprintw(game_map, a, b, "O");
@@ -180,43 +180,43 @@ void Game::moveDOWN(int map[][10]) {
 void Game::moveLEFT(int map[][10]) {
     int left = b - 4;
     int left2 = b - 5;
-    if (map[a - 1][left] == Wall) return;
-    else if (map[a - 1][left] == Box) {
-        if (map[a - 1][left2] == Wall) return;
-        else if (map[a - 1][left2] == Box || map[a - 1][left2] == BoxOnGoal) return;
+    if (map[a - 1][left] == WALL) return;
+    else if (map[a - 1][left] == BOX) {
+        if (map[a - 1][left2] == WALL) return;
+        else if (map[a - 1][left2] == BOX || map[a - 1][left2] == BOX_ON_GOAL) return;
         else {
-            if (map[a - 1][left2] == Goal) {
+            if (map[a - 1][left2] == GOAL) {
                 s.pushUp();
                 mvwprintw(game_map, a, b - 2, "*");
-                map[a - 1][left2] = BoxOnGoal;
-                map[a - 1][left] = Space;
+                map[a - 1][left2] = BOX_ON_GOAL;
+                map[a - 1][left] = SPACE;
             } else {
                 s.pushUp();
                 mvwprintw(game_map, a, b - 2, "*");
-                map[a - 1][left2] = Box;
-                map[a - 1][left] = Space;
+                map[a - 1][left2] = BOX;
+                map[a - 1][left] = SPACE;
             }
         }
-    } else if (map[a - 1][left] == BoxOnGoal) {
-        if (map[a - 1][left2] == Wall) return;
-        else if (map[a - 1][left2] == Box || map[a - 1][left2] == BoxOnGoal) return;
+    } else if (map[a - 1][left] == BOX_ON_GOAL) {
+        if (map[a - 1][left2] == WALL) return;
+        else if (map[a - 1][left2] == BOX || map[a - 1][left2] == BOX_ON_GOAL) return;
         else {
-            if (map[a - 1][left2] == Goal) {
+            if (map[a - 1][left2] == GOAL) {
                 s.pushUp();
                 mvwprintw(game_map, a, b - 2, "*");
-                map[a - 1][left2] = BoxOnGoal;
-                map[a - 1][left] = Goal;
+                map[a - 1][left2] = BOX_ON_GOAL;
+                map[a - 1][left] = GOAL;
             } else {
                 s.pushUp();
                 mvwprintw(game_map, a, b - 2, "*");
-                map[a - 1][left2] = Box;
-                map[a - 1][left] = Goal;
+                map[a - 1][left2] = BOX;
+                map[a - 1][left] = GOAL;
             }
         }
 
     }
-    if (map[a - 1][b - 3] == Goal) mvwprintw(game_map, a, b, "@");
-    else if (map[a - 1][b - 3] == Space) mvwprintw(game_map, a, b, " ");
+    if (map[a - 1][b - 3] == GOAL) mvwprintw(game_map, a, b, "@");
+    else if (map[a - 1][b - 3] == SPACE) mvwprintw(game_map, a, b, " ");
     b--;
     s.stepUp();
     mvwprintw(game_map, a, b, "O");
@@ -228,43 +228,43 @@ void Game::moveLEFT(int map[][10]) {
 void Game::moveRIGHT(int map[][10]) {
     int right = b - 2;
     int right2 = b - 1;
-    if (map[a - 1][right] == Wall) return;
-    else if (map[a - 1][right] == Box) {
-        if (map[a - 1][right2] == Wall) return;
-        else if (map[a - 1][right2] == Box || map[a - 1][right2] == BoxOnGoal) return;
+    if (map[a - 1][right] == WALL) return;
+    else if (map[a - 1][right] == BOX) {
+        if (map[a - 1][right2] == WALL) return;
+        else if (map[a - 1][right2] == BOX || map[a - 1][right2] == BOX_ON_GOAL) return;
         else {
-            if (map[a - 1][right2] == Goal) {
+            if (map[a - 1][right2] == GOAL) {
                 s.pushUp();
                 mvwprintw(game_map, a, b + 2, "*");
-                map[a - 1][right2] = BoxOnGoal;
-                map[a - 1][right] = Space;
+                map[a - 1][right2] = BOX_ON_GOAL;
+                map[a - 1][right] = SPACE;
             } else {
                 s.pushUp();
                 mvwprintw(game_map, a, b + 2, "*");
-                map[a - 1][right2] = Box;
-                map[a - 1][right] = Space;
+                map[a - 1][right2] = BOX;
+                map[a - 1][right] = SPACE;
             }
         }
-    } else if (map[a - 1][right] == BoxOnGoal) {
-        if (map[a - 1][right2] == Wall) return;
-        else if (map[a - 1][right2] == Box || map[a - 1][right2] == BoxOnGoal) return;
+    } else if (map[a - 1][right] == BOX_ON_GOAL) {
+        if (map[a - 1][right2] == WALL) return;
+        else if (map[a - 1][right2] == BOX || map[a - 1][right2] == BOX_ON_GOAL) return;
         else {
-            if (map[a - 1][right2] == Goal) {
+            if (map[a - 1][right2] == GOAL) {
                 s.pushUp();
                 mvwprintw(game_map, a, b + 2, "*");
-                map[a - 1][right2] = BoxOnGoal;
-                map[a - 1][right] = Goal;
+                map[a - 1][right2] = BOX_ON_GOAL;
+                map[a - 1][right] = GOAL;
             } else {
                 s.pushUp();
                 mvwprintw(game_map, a, b + 2, "*");
-                map[a - 1][right2] = Box;
-                map[a - 1][right] = Goal;
+                map[a - 1][right2] = BOX;
+                map[a - 1][right] = GOAL;
             }
         }
 
     }
-    if (map[a - 1][b - 3] == Goal) mvwprintw(game_map, a, b, "@");
-    else if (map[a - 1][b - 3] == Space) mvwprintw(game_map, a, b, " ");
+    if (map[a - 1][b - 3] == GOAL) mvwprintw(game_map, a, b, "@");
+    else if (map[a - 1][b - 3] == SPACE) mvwprintw(game_map, a, b, " ");
     b++;
     s.stepUp();
     mvwprintw(game_map, a, b, "O");
