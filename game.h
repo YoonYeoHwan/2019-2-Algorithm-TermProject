@@ -7,7 +7,6 @@ enum {
     Space, Wall, Box, Goal, Out, BoxOnGoal
 };
 
-
 class Game {
 private:
     score s;
@@ -34,22 +33,6 @@ public:
         start_color();
         init_pair(1, COLOR_WHITE, COLOR_WHITE);
         init_pair(2, COLOR_RED, COLOR_WHITE);
-
-        win_start = newwin(27, 27, 0, 0);
-        wattron(win_start, COLOR_PAIR(2));
-        wborder(win_start, '*', '*', '*', '*', '*', '*', '*', '*');
-        wattroff(win_start, COLOR_PAIR(2));
-        wattron(win_start, COLOR_PAIR(2));
-        mvwprintw(win_start, 4, 7, "PUSH BOX GAME");
-        mvwprintw(win_start, 11, 7, "PRESS \"u\" KEY");
-        mvwprintw(win_start, 13, 5, "TO START USER MODE");
-        mvwprintw(win_start, 17, 7, "PRESS \"s\" KEY");
-        mvwprintw(win_start, 19, 4, "TO START SOLVER MODE");
-        wattroff(win_start, COLOR_PAIR(2));
-        refresh();
-        wrefresh(win_start);
-        getch();
-        delwin(win_start);
 
         resize_term(27, 27);
         attron(COLOR_PAIR(2));

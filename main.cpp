@@ -1,4 +1,5 @@
 #include "main.h"
+#include <iostream>
 
 int main() {
     // 0 : USER
@@ -7,8 +8,10 @@ int main() {
 
     if (command == USER) {
         user_mode_game();
-    } else {
-//        auto_mode_game();
+    }
+
+    else if (command == AUTO){
+        auto_mode_game();
     }
 
     return 0;

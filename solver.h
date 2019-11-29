@@ -5,10 +5,6 @@
 #ifndef INC_2019_2_ALGORITHM_TERMPROJECT_SOLVER_H
 #define INC_2019_2_ALGORITHM_TERMPROJECT_SOLVER_H
 
-
-class solver {
-
-};
-
+void auto_mode_game(void);
 
 #endif //INC_2019_2_ALGORITHM_TERMPROJECT_SOLVER_H

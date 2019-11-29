@@ -3,3 +3,6 @@
 //
 
 #include "solver.h"
+void auto_mode_game(void){
+    return;
+}
