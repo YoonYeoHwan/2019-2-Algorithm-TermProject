@@ -4,8 +4,6 @@
 #include <iostream>
 #include <ncurses.h>
 
-//#define DEBUG_AUTO
-
 enum {
     SPACE, WALL, BOX, GOAL, OUT, BOX_ON_GOAL
 };
@@ -29,7 +27,6 @@ private:
     int goalCount;
 public:
     Game() {
-#ifndef DEBUG_AUTO
         initscr();
         keypad(stdscr, TRUE);
         curs_set(0);
@@ -66,7 +63,6 @@ public:
         wrefresh(win_push);
         wrefresh(win_step);
         wrefresh(win_life);
-#endif
     }
 
     void setMap(int level);

@@ -13,8 +13,8 @@ using namespace std;
 int heuristics(const _t_state &cur_state) {
     queue <_t_state> valid_moves;
 
-    vector <pair<int, int> > boxes;
-    vector <vector<char> > level_map;
+    vector <pair<int, int>> boxes;
+    vector <vector<char>> level_map;
 
     stringstream ss(cur_state.state_str);
     string line;
@@ -236,7 +236,7 @@ int heuristics(const _t_state &cur_state) {
 queue <_t_state> gen_valid_states(const _t_state &cur_state) {
     queue <_t_state> valid_moves;
 
-    vector <vector<char> > new_level_map;
+    vector <vector<char>> new_level_map;
     _t_state new_state;
 
     stringstream ss(cur_state.state_str);
@@ -247,7 +247,7 @@ queue <_t_state> gen_valid_states(const _t_state &cur_state) {
     _t_player player;
     int row = 0;
 
-    vector <vector<char> > level_map;
+    vector <vector<char>> level_map;
     while (getline(ss, line, '\n')) {
         vector<char> temp;
         level_map.push_back(temp);
@@ -416,9 +416,10 @@ _t_search_state a_start(_t_state &init_state) {
 void auto_mode_game(void) {
     Game g;
 
-    int level = 1;
+    int level = 8;
 
     g.setMap(level);
+    g.newGame(g.getMap());
 
 //    Init state
     _t_state init_state;
@@ -427,8 +428,8 @@ void auto_mode_game(void) {
     init_state.moves = init_state.pushes =
     init_state.total_cost = init_state.h_score = 0;
 
-    cout << init_state.state_str << endl;
-    cout << endl;
+//    cout << init_state.state_str << endl;
+//    cout << endl;
 
     timeval start, end;
     long sec, microsec;
@@ -437,23 +438,71 @@ void auto_mode_game(void) {
     _t_search_state final_stat = a_start(init_state);
     gettimeofday(&end, NULL);
 
-
-    //substring used to remove ending ', ' in string
+//    //substring used to remove ending ', ' in string
     std::cout << "  Solution: " << std::endl;
     std::cout << "    "
               << final_stat.node.move_list.substr(0, (final_stat.node.move_list.size()))
               << std::endl;
-    std::cout << "    # of nodes generated: ";
-    std::cout << final_stat.node_count << std::endl;
-    std::cout << "    # of duplicate states generated: ";
-    std::cout << final_stat.rep_node_count << std::endl;
-    std::cout << "    # of fringe nodes when termination occured: ";
-    std::cout << final_stat.fringe_node << std::endl;
-    std::cout << "    # of explored nodes: ";
-    std::cout << final_stat.explored_count << std::endl;
-    //report search algorithm runtime
-    std::cout << "  Actual run time: ";
-    sec = end.tv_sec - start.tv_sec;
-    microsec = end.tv_usec - start.tv_usec;
-    std::cout << (sec + (microsec / 1000000.0)) << " seconds" << std::endl;
+//    std::cout << "    # of nodes generated: ";
+//    std::cout << final_stat.node_count << std::endl;
+//    std::cout << "    # of duplicate states generated: ";
+//    std::cout << final_stat.rep_node_count << std::endl;
+//    std::cout << "    # of fringe nodes when termination occured: ";
+//    std::cout << final_stat.fringe_node << std::endl;
+//    std::cout << "    # of explored nodes: ";
+//    std::cout << final_stat.explored_count << std::endl;
+//    //report search algorithm runtime
+//    std::cout << "  Actual run time: ";
+//    sec = end.tv_sec - start.tv_sec;
+//    microsec = end.tv_usec - start.tv_usec;
+//    std::cout << (sec + (microsec / 1000000.0)) << " seconds" << std::endl;
+
+    int pos = 0;
+    int prev = 0;
+    int length = final_stat.node.move_list.size();
+
+//    cout << final_stat.node.move_list.size() << endl;
+
+    bool checkF1 = false;
+    while (true) {
+        int inputKey = getch();
+
+        if (inputKey == 'q') {
+            return;
+        }
+
+        prev = pos;
+
+        if (0 <= pos && pos < length) {
+            if (inputKey == KEY_RIGHT) {
+                pos++;
+            } else if (inputKey == KEY_LEFT) {
+                pos--;
+            }
+        }
+
+        char command = final_stat.node.move_list[prev];
+
+        switch (command) {
+            case 'u':
+                g.moveUP(g.getMap());
+                break;
+            case 'd':
+                g.moveDOWN(g.getMap());
+                break;
+            case 'l':
+                g.moveLEFT(g.getMap());
+                break;
+            case 'r':
+                g.moveRIGHT(g.getMap());
+                break;
+            default:
+                break;
+        }
+
+//        if (g.finishGame()) {
+//            break;
+//        }
+    }
+
 }
