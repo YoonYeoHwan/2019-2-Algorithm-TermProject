@@ -1,16 +1,22 @@
 all:pushboxgame
 
-pushboxgame:game.o map.o main.o score.o
-	g++ -W -Wall -g -o pushboxgame score.o game.o map.o main.o -lncurses
+pushboxgame:game.o map.o main.o score.o user.o solver.o game.o
+	g++ -W -Wall -g -o pushboxgame score.o game.o map.o user.o solver.o main.o -lncurses
 
 Score.o:score.cpp
 	g++ -W -Wall -g -c -o score.o score.cpp
 
 game.o:game.cpp
-	g++ -W -Wall -g -c -o game.o game.cpp 
+	g++ -W -Wall -g -c -o game.o game.cpp
 
 map.o:map.cpp
 	g++ -W -Wall -g -c -o map.o map.cpp
+
+user.o:user.cpp
+	g++ -W -Wall -g -c -o user.o user.cpp
+
+solver.o:solver.cpp
+	g++ -W -Wall -g -c -o solver.o solver.cpp
 
 main.o:main.cpp
 	g++ -W -Wall -g -c -o main.o main.cpp
