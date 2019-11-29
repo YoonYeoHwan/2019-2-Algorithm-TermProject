@@ -24,6 +24,11 @@ void user_mode_game(void) {
 
         while (true) {
             int inputKey = getch();
+
+            if (inputKey == 'q') {
+                return;
+            }
+
             if (inputKey == KEY_F(1)) {
                 g.lifeRefresh();
                 g.setMap(--level);
