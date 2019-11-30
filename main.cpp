@@ -9,7 +9,7 @@ int main() {
     if (command == USER) {
         user_mode_game();
     } else if (command == AUTO) {
-        for (int level = 2; level <= 10; level++) {
+        for (int level = 1; level <= 11; level++) {
             auto_mode_game(level);
             getch();
         }
