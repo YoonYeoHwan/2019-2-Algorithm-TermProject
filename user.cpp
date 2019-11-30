@@ -30,7 +30,6 @@ void user_mode_game(void) {
             }
 
             if (inputKey == KEY_F(1)) {
-                g.lifeRefresh();
                 g.setMap(--level);
                 g.newGame(g.getMap());
                 checkF1 = true;
@@ -66,11 +65,7 @@ void user_mode_game(void) {
             g.clearMap();
             g.reloadMap();
         }
-        if (g.getLife() == 0) {
-            g.gameOver();
-            getch();
-            break;
-        }
+
     }
 
 }

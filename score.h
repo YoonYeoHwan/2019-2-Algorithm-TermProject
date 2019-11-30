@@ -10,12 +10,9 @@ public:
 
     int getStep();
 
-    int getLife();
-
     score();
 
 private:
-    int lifeNum;
     int stepNum;
     int pushNum;
 };

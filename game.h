@@ -23,10 +23,8 @@ private:
     WINDOW *win_push;
     WINDOW *win_level;
     WINDOW *win_step;
-    // WINDOW *win_start;
     WINDOW *win_clear;
     WINDOW *win_end;
-    WINDOW *win_life;
     WINDOW *win_over;
     std::stack<_t_step> stack_step;
     int map_arr[10][10];
@@ -43,7 +41,7 @@ public:
         init_pair(1, COLOR_WHITE, COLOR_WHITE);
         init_pair(2, COLOR_RED, COLOR_WHITE);
 
-        resize_term(36, 27);
+        resize_term(32, 27);
         attron(COLOR_PAIR(2));
         border('*', '*', '*', '*', '*', '*', '*', '*');
         mvprintw(2, 7, "push box game");
@@ -62,15 +60,11 @@ public:
         wborder(win_step, '|', '|', '-', '-', '+', '+', '+', '+');
         mvwprintw(win_step, 1, 1, "Step");
         mvwprintw(win_step, 2, 3, "0");
-        win_life = newwin(4, 7, 22, 10);
-        wborder(win_life, '|', '|', '-', '-', '+', '+', '+', '+');
-        mvwprintw(win_life, 1, 1, "Life");
-        mvwprintw(win_life, 2, 3, "3");
+
         refresh();
         wrefresh(win_level);
         wrefresh(win_push);
         wrefresh(win_step);
-        wrefresh(win_life);
     }
 
     int undo(void);
@@ -94,10 +88,6 @@ public:
     void stepRefresh(WINDOW *win, int step);
 
     void pushRefresh(WINDOW *win, int push);
-
-    void lifeRefresh();
-
-    int getLife();
 
     int (*getMap())[10];
 
