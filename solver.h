@@ -39,6 +39,12 @@ typedef struct STATE {
     int pushes;
     int total_cost;
     int h_score;
+
+    struct _compare {
+        bool operator()(const STATE &s, int h_score) {
+            return s.h_score > h_score;
+        }
+    };
 } _t_state;
 
 typedef struct SEARCH_STATE {

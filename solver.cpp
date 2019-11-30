@@ -4,7 +4,7 @@
 
 #include "solver.h"
 #include "game.h"
-#include <typeinfo> 
+#include <typeinfo>
 
 #define MOVE_COST 1
 #define PUSH_COST 1
@@ -15,8 +15,8 @@ bool isloading = false;
 int heuristics(const _t_state &cur_state) {
     queue <_t_state> valid_moves;
 
-    vector <pair<int, int> > boxes;
-    vector <vector<char> > level_map;
+    vector <pair<int, int>> boxes;
+    vector <vector<char>> level_map;
 
     stringstream ss(cur_state.state_str);
     string line;
@@ -242,7 +242,7 @@ int heuristics(const _t_state &cur_state) {
 queue <_t_state> gen_valid_states(const _t_state &cur_state) {
     queue <_t_state> valid_moves;
 
-    vector <vector<char> > new_level_map;
+    vector <vector<char>> new_level_map;
     _t_state new_state;
 
     stringstream ss(cur_state.state_str);
@@ -253,7 +253,7 @@ queue <_t_state> gen_valid_states(const _t_state &cur_state) {
     _t_player player;
     int row = 0;
 
-    vector <vector<char> > level_map;
+    vector <vector<char>> level_map;
     while (getline(ss, line, '\n')) {
         vector<char> temp;
         level_map.push_back(temp);
@@ -341,14 +341,15 @@ queue <_t_state> gen_valid_states(const _t_state &cur_state) {
     return valid_moves;
 }
 
-#define MODE 2
+#define OPEN_SEARCH_METHOD 1
+#define CLOSED_TYPE 2
 
 _t_search_state a_start(_t_state &init_state) {
     deque <_t_state> open;
 
-#if MODE == 1
+#if CLOSED_TYPE == 1
     vector <_t_state> closed;
-#elif MODE == 2
+#elif CLOSED_TYPE == 2
     set <std::string> closed;
 #else
     map <string, bool> closed;
@@ -368,9 +369,9 @@ _t_search_state a_start(_t_state &init_state) {
         current_state = open.front();
         open.pop_front();
 
-#if MODE == 1
+#if CLOSED_TYPE == 1
         closed.push_back(current_state);
-#elif MODE == 2
+#elif CLOSED_TYPE == 2
         closed.insert(current_state.state_str);
 #else
         closed.insert(make_pair(current_state.state_str, true));
@@ -393,7 +394,10 @@ _t_search_state a_start(_t_state &init_state) {
 
         while (!valid_states.empty()) {
             bool already_seen = false;
+
+#if OPEN_SEARCH_METHOD == 1
             bool inserted = false;
+#endif
 
             _t_state temp_state = valid_states.front();
 
@@ -404,14 +408,14 @@ _t_search_state a_start(_t_state &init_state) {
                 }
             }
 
-#if MODE == 1
+#if CLOSED_TYPE == 1
             for (itr = closed.begin(); itr != closed.end(); itr++) {
                 if (itr->state_str == temp_state.state_str) {
                     already_seen = true;
                     break;
                 }
             }
-#elif MODE == 2
+#elif CLOSED_TYPE == 2
             if (closed.find(temp_state.state_str) != closed.end()) {
                 already_seen = true;
             }
@@ -424,6 +428,7 @@ _t_search_state a_start(_t_state &init_state) {
             if (!already_seen) {
                 report.node_count++;
 
+#if OPEN_SEARCH_METHOD == 1
                 for (it = open.begin(); it != open.end(); it++) {
                     if (it->h_score > temp_state.h_score) {
                         open.insert(it, temp_state);
@@ -431,8 +436,12 @@ _t_search_state a_start(_t_state &init_state) {
                         break;
                     }
                 }
-
                 if (!inserted) open.push_back(temp_state);
+#else
+                deque<_t_state>::iterator it_state = std::lower_bound(open.begin(), open.end(),
+                                                                 temp_state.h_score, _t_state::_compare());
+                open.insert(it_state, temp_state);
+#endif
             } else {
                 report.rep_node_count++;
             }
@@ -450,66 +459,60 @@ void loading(void) {
     curs_set(0);
 
 
-    int a = 25; int b = 11;
+    int a = 25;
+    int b = 11;
     int n = 1;
-    
+
     mvprintw(23, 7, "Loading . . .");
 
-    while (1) {   
+    while (1) {
         mvprintw(25, 3, "             ");
         mvprintw(26, 3, "             ");
         mvprintw(27, 3, "             ");
-        if(isloading) break;
-        
-        if (n%8 == 1){
+        if (isloading) break;
+
+        if (n % 8 == 1) {
             mvaddch(a, b++, ' ');
-            mvaddch(a, b-1, '.');
+            mvaddch(a, b - 1, '.');
             mvaddch(a, b, 'o');
-            mvaddch(a, b+1, 'O');
-        }
-        else if (n%8 == 2) {
+            mvaddch(a, b + 1, 'O');
+        } else if (n % 8 == 2) {
             mvaddch(a, b++, ' ');
-            mvaddch(a, b-1, '.');
+            mvaddch(a, b - 1, '.');
             mvaddch(a, b, 'o');
-            mvaddch(a+1, b, 'O');
-        }
-        else if (n%8 == 3) {
+            mvaddch(a + 1, b, 'O');
+        } else if (n % 8 == 3) {
             mvaddch(a++, b, ' ');
-            mvaddch(a-1, b, '.');
+            mvaddch(a - 1, b, '.');
             mvaddch(a, b, 'o');
-            mvaddch(a+1, b, 'O');
-        }
-        else if (n%8 == 4) {
+            mvaddch(a + 1, b, 'O');
+        } else if (n % 8 == 4) {
             mvaddch(a++, b, ' ');
-            mvaddch(a-1, b, '.');
+            mvaddch(a - 1, b, '.');
             mvaddch(a, b, 'o');
-            mvaddch(a, b-1, 'O');
-        }
-        else if (n%8 == 5) {
+            mvaddch(a, b - 1, 'O');
+        } else if (n % 8 == 5) {
             mvaddch(a, b--, ' ');
-            mvaddch(a, b+1, '.');
+            mvaddch(a, b + 1, '.');
             mvaddch(a, b, 'o');
-            mvaddch(a, b-1, 'O');
-        }
-        else if (n%8 == 6) {
+            mvaddch(a, b - 1, 'O');
+        } else if (n % 8 == 6) {
             mvaddch(a, b--, ' ');
-            mvaddch(a, b+1, '.');
+            mvaddch(a, b + 1, '.');
             mvaddch(a, b, 'o');
-            mvaddch(a-1, b, 'O');
-        }        
-        else if (n%8 == 7) {
+            mvaddch(a - 1, b, 'O');
+        } else if (n % 8 == 7) {
             mvaddch(a--, b, ' ');
-            mvaddch(a+1, b, '.');
+            mvaddch(a + 1, b, '.');
             mvaddch(a, b, 'o');
-            mvaddch(a-1, b, 'O');
-        }
-        else if (n%8 == 0) {
+            mvaddch(a - 1, b, 'O');
+        } else if (n % 8 == 0) {
             mvaddch(a--, b, ' ');
-            mvaddch(a+1, b, '.');
+            mvaddch(a + 1, b, '.');
             mvaddch(a, b, 'o');
-            mvaddch(a, b+1, 'O');
+            mvaddch(a, b + 1, 'O');
         }
-        
+
         refresh();
         usleep(100000);
 
@@ -519,7 +522,7 @@ void loading(void) {
 
 void auto_mode_game(int level) {
 
-    for(int i=23;i<=30;i++) {
+    for (int i = 23; i <= 30; i++) {
         mvprintw(i, 3, "                    ");
     }
 
@@ -608,12 +611,12 @@ void auto_mode_game(int level) {
 
         int c_len = strlen(ch);
         int line = 0;
-        for(int i=0; i<c_len + 20; i+=20) {
+        for (int i = 0; i < c_len + 20; i += 20) {
             char b[100] = "";
             strncpy(b, (ch + 20 * line), 20);
             int b_len = strlen(b);
-            for(int j=0; j< b_len; j++) {
-                if(i + j == pos) {
+            for (int j = 0; j < b_len; j++) {
+                if (i + j == pos) {
                     attron(COLOR_PAIR(3));
                     mvaddch(27 + line, 3 + j, b[j]);
                     attroff(COLOR_PAIR(3));
