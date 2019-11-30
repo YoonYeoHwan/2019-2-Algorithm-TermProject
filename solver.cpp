@@ -555,8 +555,8 @@ void auto_mode_game(int level) {
 
 ////    //substring used to remove ending ', ' in string
 
-    start_color();
-    init_pair(3, COLOR_CYAN, COLOR_WHITE);
+    // start_color();
+    // init_pair(3, COLOR_CYAN, COLOR_WHITE);
 
     sec = end.tv_sec - start.tv_sec;
     microSec = end.tv_usec - start.tv_usec;
@@ -589,8 +589,8 @@ void auto_mode_game(int level) {
     int length = final_stat.node.move_list.size();
     refresh();
 
-    start_color();
-    init_pair(3, COLOR_RED, COLOR_WHITE);
+    // start_color();
+    // init_pair(3, COLOR_RED, COLOR_WHITE);
 
     // bool checkF1 = false;
     while (true) {
@@ -646,8 +646,20 @@ void auto_mode_game(int level) {
         }
     }
 
-    attron(COLOR_PAIR(3));
+
+    attron(COLOR_PAIR(2));
     mvprintw(35, 5, "Press any Key...");
-    attroff(COLOR_PAIR(3));
+    attroff(COLOR_PAIR(2));
     getch();
+    
+    // 현재는 level 11 까지 있기 때문에 level 11 클리어시 엔딩 화면 나오도록 설정.
+    // 중간 중간에는 단계 클리어 화면 나오도록 설정.
+    // 나중에 보고 필요없다 싶으면 지워도 됨.
+    if (level == 11) {
+        g.ending();
+    }
+    else {
+        g.clearMap();
+    }
+
 }

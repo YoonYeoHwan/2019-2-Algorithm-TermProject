@@ -138,6 +138,9 @@ void Game::newGame(int map[][10]) {
         }
     }
     mvwprintw(game_map, a, b, "@");
+
+    print_usermode();
+
     wrefresh(game_map);
 }
 
@@ -396,6 +399,8 @@ void Game::reloadMap() {
     mvwprintw(win_step, 1, 1, "Step");
     mvwprintw(win_step, 2, 3, "%d", s.getStep());
 
+    print_usermode();
+
     refresh();
     wrefresh(win_push);
     wrefresh(win_step);
@@ -413,4 +418,16 @@ void Game::ending() {
     refresh();
     wrefresh(win_end);
     getch();
+}
+
+void Game::print_usermode() {
+    int y_list[] = {27, 28, 29, 30, 31, 31, 31, 30, 29, 28, 27, 27, 27, 27, 28, 29, 29, 29, 30, 31, 31, 31, 27, 27, 27, 28, 29, 29, 29, 30, 31, 31, 31, 27, 27, 27, 28, 28, 29, 29, 29, 30, 30, 31, 31,
+    33, 33, 33, 33, 33, 33, 33, 33, 33, 33, 34, 34, 34, 34, 34, 34, 34, 34, 35, 35, 35, 35, 35, 35, 35, 35, 35, 35, 36, 36, 36, 36, 36, 36, 36, 37, 37, 37, 37, 37, 37, 37, 37, 37, 37};
+    int x_list[] = {5, 5, 5, 5, 5, 6, 7, 7, 7, 7, 7, 11, 10, 9, 9, 9, 10, 11, 11, 11, 10, 9, 13, 14, 15, 13, 13, 14, 15, 13, 13, 14, 15, 17, 18, 19, 17, 19, 17, 18, 19, 17, 18, 17, 19,
+    5, 7, 9, 10, 11, 13, 14, 17, 18, 19, 5, 6, 7, 9, 11, 13, 15, 17, 5, 6, 7, 9, 11, 13, 15, 17, 18, 19, 5, 7, 9, 11, 13, 15, 17, 5, 7, 9, 10, 11, 13, 14, 17, 18, 19};
+    
+    attron(COLOR_PAIR(4));
+    for(int i=0; i<91; i++)
+        mvprintw(y_list[i] - 2, x_list[i] + 1, "#");
+    attroff(COLOR_PAIR(4));
 }
