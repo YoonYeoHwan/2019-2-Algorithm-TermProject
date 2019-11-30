@@ -16,6 +16,9 @@
 #include <map>
 #include <unistd.h>
 
+#define MOVE_COST 1
+#define PUSH_COST 1
+
 using std::thread;
 
 #define INC_2019_2_ALGORITHM_TERMPROJECT_SOLVER_H
@@ -55,7 +58,7 @@ typedef struct SEARCH_STATE {
     int explored_count;
 } _t_search_state;
 
-int heuristics(const _t_state &cur_state);
+int heuristics_score(const _t_state &cur_state);
 
 std::queue <_t_state> gen_valid_states(const _t_state &cur_state);
 

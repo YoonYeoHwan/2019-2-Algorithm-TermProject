@@ -6,15 +6,10 @@
 #include "game.h"
 #include <typeinfo>
 
-#define MOVE_COST 1
-#define PUSH_COST 1
-
 using namespace std;
-bool isloading = false;
+bool isLoading = false;
 
-int heuristics(const _t_state &cur_state) {
-    queue <_t_state> valid_moves;
-
+int heuristics_score(const _t_state &cur_state) {
     vector <pair<int, int>> boxes;
     vector <vector<char>> level_map;
 
@@ -61,177 +56,178 @@ int heuristics(const _t_state &cur_state) {
 
         if (in_corner) {
             score += 1000;
-        } else {
-            if (n_wall) {
-                bool safe = false;
-                bool corner_e = false;
-                bool corner_w = false;
-                int level_map_size = level_map[cur_box_y].size();
-                for (int i = cur_box_x + 1; i < level_map_size; i++) {
+            continue;
+        }
 
-                    if ((level_map[cur_box_y][i] == '.') ||
-                        (level_map[cur_box_y][i] == '*') ||
-                        (level_map[cur_box_y][i] == '+') ||
-                        (level_map[cur_box_y - 1][i] != '#')) {
-                        safe = true;
-                        break;
-                    }
+        if (n_wall) {
+            bool safe = false;
+            bool corner_e = false;
+            bool corner_w = false;
+            int level_map_size = level_map[cur_box_y].size();
+            for (int i = cur_box_x + 1; i < level_map_size; i++) {
 
-                    if ((level_map[cur_box_y][i] == '#') &&
-                        (level_map[cur_box_y - 1][i] == '#')) {
-                        corner_e = true;
-                        break;
-                    }
+                if ((level_map[cur_box_y][i] == '.') ||
+                    (level_map[cur_box_y][i] == '*') ||
+                    (level_map[cur_box_y][i] == '+') ||
+                    (level_map[cur_box_y - 1][i] != '#')) {
+                    safe = true;
+                    break;
                 }
 
-                for (int i = cur_box_x - 1; i >= 0; i--) {
-                    if ((level_map[cur_box_y][i] == '.') ||
-                        (level_map[cur_box_y][i] == '*') ||
-                        (level_map[cur_box_y][i] == '+') ||
-                        (level_map[cur_box_y - 1][i] != '#')) {
-                        safe = true;
-                        break;
-                    }
-
-                    if ((level_map[cur_box_y][i] == '#') &&
-                        (level_map[cur_box_y - 1][i] == '#')) {
-                        corner_w = true;
-                        break;
-                    }
-                }
-
-                if (!safe && corner_e && corner_w) {
-                    score += 1000;
+                if ((level_map[cur_box_y][i] == '#') &&
+                    (level_map[cur_box_y - 1][i] == '#')) {
+                    corner_e = true;
+                    break;
                 }
             }
 
-            if (e_wall) {
-                bool safe = false;
-                bool corner_n = false;
-                bool corner_s = false;
-
-                for (int i = cur_box_y - 1; i >= 0; i--) {
-                    if ((level_map[i][cur_box_x] == '.') ||
-                        (level_map[i][cur_box_x] == '*') ||
-                        (level_map[i][cur_box_x] == '+') ||
-                        (level_map[i][cur_box_x + 1] != '#')) {
-                        safe = true;
-                        break;
-                    }
-
-                    if ((level_map[i][cur_box_x] == '#') &&
-                        (level_map[i][cur_box_x + 1] == '#')) {
-                        corner_n = true;
-                        break;
-                    }
+            for (int i = cur_box_x - 1; corner_e && i >= 0; i--) {
+                if ((level_map[cur_box_y][i] == '.') ||
+                    (level_map[cur_box_y][i] == '*') ||
+                    (level_map[cur_box_y][i] == '+') ||
+                    (level_map[cur_box_y - 1][i] != '#')) {
+                    safe = true;
+                    break;
                 }
 
-                int level_map_size = level_map.size();
-                for (int i = cur_box_y + 1; i < level_map_size; i++) {
-                    if ((level_map[i][cur_box_x] == '.') ||
-                        (level_map[i][cur_box_x] == '*') ||
-                        (level_map[i][cur_box_x] == '+') ||
-                        (level_map[i][cur_box_x + 1] != '#')) {
-                        safe = true;
-                        break;
-                    }
-
-                    if ((level_map[i][cur_box_x] == '#') &&
-                        (level_map[i][cur_box_x + 1] == '#')) {
-                        corner_s = true;
-                        break;
-                    }
-                }
-
-                if (!safe && corner_n && corner_s) {
-                    score += 1000;
+                if ((level_map[cur_box_y][i] == '#') &&
+                    (level_map[cur_box_y - 1][i] == '#')) {
+                    corner_w = true;
+                    break;
                 }
             }
 
-            if (s_wall) {
-                bool safe = false;
-                bool corner_e = false;
-                bool corner_w = false;
+            if (!safe && corner_e && corner_w) {
+                score += 1000;
+            }
+        }
 
-                int level_map_size = level_map[cur_box_y].size();
-                for (int i = cur_box_x + 1; i < level_map_size; i++) {
-                    if ((level_map[cur_box_y][i] == '.') ||
-                        (level_map[cur_box_y][i] == '*') ||
-                        (level_map[cur_box_y][i] == '+') ||
-                        (level_map[cur_box_y + 1][i] != '#')) {
-                        safe = true;
-                        break;
-                    }
+        if (e_wall) {
+            bool safe = false;
+            bool corner_n = false;
+            bool corner_s = false;
 
-                    if ((level_map[cur_box_y][i] == '#') &&
-                        (level_map[cur_box_y + 1][i] == '#')) {
-                        corner_e = true;
-                        break;
-                    }
+            for (int i = cur_box_y - 1; i >= 0; i--) {
+                if ((level_map[i][cur_box_x] == '.') ||
+                    (level_map[i][cur_box_x] == '*') ||
+                    (level_map[i][cur_box_x] == '+') ||
+                    (level_map[i][cur_box_x + 1] != '#')) {
+                    safe = true;
+                    break;
                 }
 
-                for (int i = cur_box_x - 1; i >= 0; i--) {
-                    if ((level_map[cur_box_y][i] == '.') ||
-                        (level_map[cur_box_y][i] == '*') ||
-                        (level_map[cur_box_y][i] == '+') ||
-                        (level_map[cur_box_y + 1][i] != '#')) {
-                        safe = true;
-                        break;
-                    }
-
-                    if ((level_map[cur_box_y][i] == '#') &&
-                        (level_map[cur_box_y + 1][i] == '#')) {
-                        corner_w = true;
-                        break;
-                    }
-                }
-
-                if (!safe && corner_e && corner_w) {
-                    score += 1000;
+                if ((level_map[i][cur_box_x] == '#') &&
+                    (level_map[i][cur_box_x + 1] == '#')) {
+                    corner_n = true;
+                    break;
                 }
             }
 
-            if (w_wall) {
-                bool safe = false;
-                bool corner_n = false;
-                bool corner_s = false;
-
-                for (int i = cur_box_y - 1; i >= 0; i--) {
-                    if ((level_map[i][cur_box_x] == '.') ||
-                        (level_map[i][cur_box_x] == '*') ||
-                        (level_map[i][cur_box_x] == '+') ||
-                        (level_map[i][cur_box_x - 1] != '#')) {
-                        safe = true;
-                        break;
-                    }
-
-                    if ((level_map[i][cur_box_x] == '#') &&
-                        (level_map[i][cur_box_x - 1] == '#')) {
-                        corner_n = true;
-                        break;
-                    }
+            int level_map_size = level_map.size();
+            for (int i = cur_box_y + 1; corner_n && i < level_map_size; i++) {
+                if ((level_map[i][cur_box_x] == '.') ||
+                    (level_map[i][cur_box_x] == '*') ||
+                    (level_map[i][cur_box_x] == '+') ||
+                    (level_map[i][cur_box_x + 1] != '#')) {
+                    safe = true;
+                    break;
                 }
 
-                int level_map_size = level_map.size();
-                for (int i = cur_box_y + 1; i < level_map_size; i++) {
-                    if ((level_map[i][cur_box_x] == '.') ||
-                        (level_map[i][cur_box_x] == '*') ||
-                        (level_map[i][cur_box_x] == '+') ||
-                        (level_map[i][cur_box_x - 1] != '#')) {
-                        safe = true;
-                        break;
-                    }
+                if ((level_map[i][cur_box_x] == '#') &&
+                    (level_map[i][cur_box_x + 1] == '#')) {
+                    corner_s = true;
+                    break;
+                }
+            }
 
-                    if ((level_map[i][cur_box_x] == '#') &&
-                        (level_map[i][cur_box_x - 1] == '#')) {
-                        corner_s = true;
-                        break;
-                    }
+            if (!safe && corner_n && corner_s) {
+                score += 1000;
+            }
+        }
+
+        if (s_wall) {
+            bool safe = false;
+            bool corner_e = false;
+            bool corner_w = false;
+
+            int level_map_size = level_map[cur_box_y].size();
+            for (int i = cur_box_x + 1; i < level_map_size; i++) {
+                if ((level_map[cur_box_y][i] == '.') ||
+                    (level_map[cur_box_y][i] == '*') ||
+                    (level_map[cur_box_y][i] == '+') ||
+                    (level_map[cur_box_y + 1][i] != '#')) {
+                    safe = true;
+                    break;
                 }
 
-                if (!safe && corner_n && corner_s) {
-                    score += 1000;
+                if ((level_map[cur_box_y][i] == '#') &&
+                    (level_map[cur_box_y + 1][i] == '#')) {
+                    corner_e = true;
+                    break;
                 }
+            }
+
+            for (int i = cur_box_x - 1; corner_e && i >= 0; i--) {
+                if ((level_map[cur_box_y][i] == '.') ||
+                    (level_map[cur_box_y][i] == '*') ||
+                    (level_map[cur_box_y][i] == '+') ||
+                    (level_map[cur_box_y + 1][i] != '#')) {
+                    safe = true;
+                    break;
+                }
+
+                if ((level_map[cur_box_y][i] == '#') &&
+                    (level_map[cur_box_y + 1][i] == '#')) {
+                    corner_w = true;
+                    break;
+                }
+            }
+
+            if (!safe && corner_e && corner_w) {
+                score += 1000;
+            }
+        }
+
+        if (w_wall) {
+            bool safe = false;
+            bool corner_n = false;
+            bool corner_s = false;
+
+            for (int i = cur_box_y - 1; i >= 0; i--) {
+                if ((level_map[i][cur_box_x] == '.') ||
+                    (level_map[i][cur_box_x] == '*') ||
+                    (level_map[i][cur_box_x] == '+') ||
+                    (level_map[i][cur_box_x - 1] != '#')) {
+                    safe = true;
+                    break;
+                }
+
+                if ((level_map[i][cur_box_x] == '#') &&
+                    (level_map[i][cur_box_x - 1] == '#')) {
+                    corner_n = true;
+                    break;
+                }
+            }
+
+            int level_map_size = level_map.size();
+            for (int i = cur_box_y + 1; corner_n && i < level_map_size; i++) {
+                if ((level_map[i][cur_box_x] == '.') ||
+                    (level_map[i][cur_box_x] == '*') ||
+                    (level_map[i][cur_box_x] == '+') ||
+                    (level_map[i][cur_box_x - 1] != '#')) {
+                    safe = true;
+                    break;
+                }
+
+                if ((level_map[i][cur_box_x] == '#') &&
+                    (level_map[i][cur_box_x - 1] == '#')) {
+                    corner_s = true;
+                    break;
+                }
+            }
+
+            if (!safe && corner_n && corner_s) {
+                score += 1000;
             }
         }
     }
@@ -277,18 +273,22 @@ queue <_t_state> gen_valid_states(const _t_state &cur_state) {
 
     _t_moves moves[4] = {
             {"u", -1, 0},
+            {"r", 0,  1},
             {"d", 1,  0},
             {"l", 0,  -1},
-            {"r", 0,  1},
     };
 
     for (_t_moves move : moves) {
         char next = level_map[player.y + move.y][player.x + move.x];
 
-        if (next == '#') continue;
+        if (next != '*' &&
+            next != '$' &&
+            next != '.' &&
+            next != ' ')
+            continue;
 
         new_level_map = level_map;
-        new_level_map[player.y + move.y][player.x + move.x] = '@';
+        new_level_map[player.y + move.y][player.x + move.x] = next == '*' ? '+' : '@';
         new_level_map[player.y][player.x] = (player.state == '@') ? ' ' : '.';
 
         if (next == '$' ||
@@ -332,7 +332,7 @@ queue <_t_state> gen_valid_states(const _t_state &cur_state) {
             new_state.total_cost += MOVE_COST;
         }
 
-        new_state.h_score = heuristics(new_state);
+        new_state.h_score = heuristics_score(new_state);
         new_state.h_score += new_state.total_cost;
 
         valid_moves.push(new_state);
@@ -350,7 +350,7 @@ _t_search_state a_start(_t_state &init_state) {
 #if CLOSED_TYPE == 1
     vector <_t_state> closed;
 #elif CLOSED_TYPE == 2
-    set <std::string> closed;
+    set <string> closed;
 #else
     map <string, bool> closed;
 #endif
@@ -360,7 +360,7 @@ _t_search_state a_start(_t_state &init_state) {
     report.fringe_node = 0;
     report.explored_count = 1;
     report.node_count = 1;
-    report.node.state_str = "NULL";
+    report.node.state_str = "";
 
     _t_state current_state;
 
@@ -438,7 +438,7 @@ _t_search_state a_start(_t_state &init_state) {
                 }
                 if (!inserted) open.push_back(temp_state);
 #else
-                deque<_t_state>::iterator it_state = std::lower_bound(open.begin(), open.end(),
+                deque<_t_state>::iterator it_state = lower_bound(open.begin(), open.end(),
                                                                  temp_state.h_score, _t_state::_compare());
                 open.insert(it_state, temp_state);
 #endif
@@ -469,7 +469,7 @@ void loading(void) {
         mvprintw(25, 3, "             ");
         mvprintw(26, 3, "             ");
         mvprintw(27, 3, "             ");
-        if (isloading) break;
+        if (isLoading) break;
 
         if (n % 8 == 1) {
             mvaddch(a, b++, ' ');
@@ -543,13 +543,13 @@ void auto_mode_game(int level) {
 //    cout << endl;
 
     timeval start, end;
-    long sec, microsec;
+    long sec, microSec;
 
-    isloading = false;
+    isLoading = false;
     thread loading_thread(loading);
     gettimeofday(&start, NULL);
     _t_search_state final_stat = a_start(init_state);
-    isloading = true;
+    isLoading = true;
     gettimeofday(&end, NULL);
     loading_thread.join();
 
@@ -559,8 +559,8 @@ void auto_mode_game(int level) {
     init_pair(3, COLOR_CYAN, COLOR_WHITE);
 
     sec = end.tv_sec - start.tv_sec;
-    microsec = end.tv_usec - start.tv_usec;
-    double running_time = sec + (microsec / 1000000.0);
+    microSec = end.tv_usec - start.tv_usec;
+    double running_time = sec + (microSec / 1000000.0);
     char running_time_text[1000] = "";
     sprintf(running_time_text, "%f", running_time);
 
@@ -574,15 +574,15 @@ void auto_mode_game(int level) {
     mvprintw(26, 3, "Solution :");
     attroff(COLOR_PAIR(3));
 
-//    std::cout << "    # of nodes generated: ";
-//    std::cout << final_stat.node_count << std::endl;
-//    std::cout << "    # of duplicate states generated: ";
-//    std::cout << final_stat.rep_node_count << std::endl;
-//    std::cout << "    # of fringe nodes when termination occured: ";
-//    std::cout << final_stat.fringe_node << std::endl;
-//    std::cout << "    # of explored nodes: ";
-//    std::cout << final_stat.explored_count << std::endl;
-//    //report search algorithm runtime
+    cout << "    # of nodes generated: ";
+    cout << final_stat.node_count << endl;
+    cout << "    # of duplicate states generated: ";
+    cout << final_stat.rep_node_count << endl;
+    cout << "    # of fringe nodes when termination occured: ";
+    cout << final_stat.fringe_node << endl;
+    cout << "    # of explored nodes: ";
+    cout << final_stat.explored_count << endl;
+    //report search algorithm runtime
 
     int pos = 0;
     int prev = 0;
