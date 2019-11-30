@@ -1,5 +1,7 @@
 # 2019-2-Algorithm-TermProject
 
+### Team : Alps
+
 ### Report - 제안서
 https://docs.google.com/document/d/1NUaYuZj_qPV_-SQSYXU-jSbH1Ll5ZLIw8FWzQWWQTxk/edit?usp=sharing
 
