@@ -85,7 +85,8 @@ int Game::undo(void) {
     wborder(game_map, '|', '|', '-', '-', '+', '+', '+', '+');
 
     while (getline(ss, line, '\n')) {
-        for (int col = 0; col < line.length(); ++col) {
+        int lineLength = line.length();
+        for (int col = 0; col < lineLength; ++col) {
             temp_row = row + 1;
             temp_col = col + 3;
 

@@ -23,7 +23,7 @@ private:
     WINDOW *win_push;
     WINDOW *win_level;
     WINDOW *win_step;
-    WINDOW *win_start;
+    // WINDOW *win_start;
     WINDOW *win_clear;
     WINDOW *win_end;
     WINDOW *win_life;

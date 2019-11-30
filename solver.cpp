@@ -23,8 +23,8 @@ int heuristics(const _t_state &cur_state) {
     while (getline(ss, line, '\n')) {
         vector<char> temp;
         level_map.push_back(temp);
-
-        for (int col = 0; col < line.length(); ++col) {
+        int lineLength = line.length();
+        for (int col = 0; col < lineLength; ++col) {
             if (line[col] == '$') {
                 boxes.push_back(make_pair(col, row));
             }
@@ -64,8 +64,8 @@ int heuristics(const _t_state &cur_state) {
                 bool safe = false;
                 bool corner_e = false;
                 bool corner_w = false;
-
-                for (int i = cur_box_x + 1; i < level_map[cur_box_y].size(); i++) {
+                int level_map_size = level_map[cur_box_y].size();
+                for (int i = cur_box_x + 1; i < level_map_size; i++) {
                     if ((level_map[cur_box_y][i] == '.') ||
                         (level_map[cur_box_y][i] == '*') ||
                         (level_map[cur_box_y][i] == '+') ||
@@ -123,7 +123,8 @@ int heuristics(const _t_state &cur_state) {
                     }
                 }
 
-                for (int i = cur_box_y + 1; i < level_map.size(); i++) {
+                int level_map_size = level_map.size();
+                for (int i = cur_box_y + 1; i < level_map_size; i++) {
                     if ((level_map[i][cur_box_x] == '.') ||
                         (level_map[i][cur_box_x] == '*') ||
                         (level_map[i][cur_box_x] == '+') ||
@@ -149,7 +150,8 @@ int heuristics(const _t_state &cur_state) {
                 bool corner_e = false;
                 bool corner_w = false;
 
-                for (int i = cur_box_x + 1; i < level_map[cur_box_y].size(); i++) {
+                int level_map_size = level_map[cur_box_y].size();
+                for (int i = cur_box_x + 1; i < level_map_size; i++) {
                     if ((level_map[cur_box_y][i] == '.') ||
                         (level_map[cur_box_y][i] == '*') ||
                         (level_map[cur_box_y][i] == '+') ||
@@ -207,7 +209,8 @@ int heuristics(const _t_state &cur_state) {
                     }
                 }
 
-                for (int i = cur_box_y + 1; i < level_map.size(); i++) {
+                int level_map_size = level_map.size();
+                for (int i = cur_box_y + 1; i < level_map_size; i++) {
                     if ((level_map[i][cur_box_x] == '.') ||
                         (level_map[i][cur_box_x] == '*') ||
                         (level_map[i][cur_box_x] == '+') ||
@@ -252,7 +255,8 @@ queue <_t_state> gen_valid_states(const _t_state &cur_state) {
         vector<char> temp;
         level_map.push_back(temp);
 
-        for (int col = 0; col < line.length(); ++col) {
+        int lineLength = line.length();
+        for (int col = 0; col < lineLength; ++col) {
             if (!found) {
                 if (line[col] == '@' | line[col] == '+') {
                     player.state = line[col];
@@ -303,7 +307,8 @@ queue <_t_state> gen_valid_states(const _t_state &cur_state) {
 
         new_state = cur_state;
         new_state.state_str = "";
-        for (int i = 0; i < new_level_map.size(); ++i) {
+        int new_level_map_size = new_level_map.size();
+        for (int i = 0; i < new_level_map_size; ++i) {
             vector<char> temp = new_level_map[i];;
 
             for (vector<char>::iterator itr = temp.begin();
@@ -481,7 +486,7 @@ void auto_mode_game(void) {
 
 //    cout << final_stat.node.move_list.size() << endl;
 
-    bool checkF1 = false;
+    // bool checkF1 = false;
     while (true) {
         int inputKey = getch();
 
