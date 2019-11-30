@@ -11,7 +11,6 @@ int main() {
     } else if (command == AUTO) {
         for (int level = 1; level <= 11; level++) {
             auto_mode_game(level);
-            getch();
         }
     }
     return 0;

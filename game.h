@@ -41,7 +41,7 @@ public:
         init_pair(1, COLOR_WHITE, COLOR_WHITE);
         init_pair(2, COLOR_RED, COLOR_WHITE);
 
-        resize_term(32, 27);
+        resize_term(40, 27);
         attron(COLOR_PAIR(2));
         border('*', '*', '*', '*', '*', '*', '*', '*');
         mvprintw(2, 7, "push box game");

@@ -645,5 +645,9 @@ void auto_mode_game(int level) {
                 break;
         }
     }
-    usleep(500000);
+
+    attron(COLOR_PAIR(3));
+    mvprintw(35, 3, "Press any Key...");
+    attroff(COLOR_PAIR(3));
+    getch();
 }
