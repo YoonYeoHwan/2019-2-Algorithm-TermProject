@@ -452,6 +452,7 @@ void loading(void) {
 
     int a = 25; int b = 11;
     int n = 1;
+    
     mvprintw(23, 3, "Loading . . .");
 
     while (1) {   
@@ -509,6 +510,11 @@ void loading(void) {
 }
 
 void auto_mode_game(int level) {
+
+    for(int i=23;i<=30;i++) {
+        mvprintw(i, 3, "                    ");
+    }
+
     Game g;
 
     g.setMap(level);
@@ -528,6 +534,7 @@ void auto_mode_game(int level) {
     timeval start, end;
     long sec, microsec;
 
+    isloading = false;
     thread loading_thread(loading);
     gettimeofday(&start, NULL);
     _t_search_state final_stat = a_start(init_state);
@@ -575,7 +582,7 @@ void auto_mode_game(int level) {
 
     // bool checkF1 = false;
     while (true) {
-        usleep(100000);
+        usleep(50000);
 
         prev = pos;
 
@@ -626,5 +633,5 @@ void auto_mode_game(int level) {
                 break;
         }
     }
-    getch();
+    usleep(500000);
 }

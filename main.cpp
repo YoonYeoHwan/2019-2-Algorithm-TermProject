@@ -9,8 +9,9 @@ int main() {
     if (command == USER) {
         user_mode_game();
     } else if (command == AUTO) {
-        auto_mode_game(1);
-        auto_mode_game(2);
+        for(int i=1;i<=10;i++) {
+            auto_mode_game(i);
+        }
     }
     return 0;
 }

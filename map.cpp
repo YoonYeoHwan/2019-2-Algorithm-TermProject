@@ -60,7 +60,7 @@ void mapArray::set_map(int map_arr[][10], int level, int &a, int &b, int &goalCo
         input >> goalCount >> a >> b;
     }
     if (level == 7) {
-        input.open("./mapFile/level8.txt");
+        input.open("./mapFile/level7.txt");
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
                 input >> map_arr[i][j];
@@ -69,7 +69,7 @@ void mapArray::set_map(int map_arr[][10], int level, int &a, int &b, int &goalCo
         input >> goalCount >> a >> b;
     }
     if (level == 8) {
-        input.open("./mapFile/level9.txt");
+        input.open("./mapFile/level8.txt");
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
                 input >> map_arr[i][j];
@@ -78,6 +78,15 @@ void mapArray::set_map(int map_arr[][10], int level, int &a, int &b, int &goalCo
         input >> goalCount >> a >> b;
     }
     if (level == 9) {
+        input.open("./mapFile/level9.txt");
+        for (int i = 0; i < 10; i++) {
+            for (int j = 0; j < 10; j++) {
+                input >> map_arr[i][j];
+            }
+        }
+        input >> goalCount >> a >> b;
+    }
+    if (level == 10) {
         input.open("./mapFile/level10.txt");
         for (int i = 0; i < 10; i++) {
             for (int j = 0; j < 10; j++) {
@@ -86,6 +95,5 @@ void mapArray::set_map(int map_arr[][10], int level, int &a, int &b, int &goalCo
         }
         input >> goalCount >> a >> b;
     }
-
 }
 
