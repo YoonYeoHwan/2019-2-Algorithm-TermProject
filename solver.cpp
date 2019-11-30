@@ -453,7 +453,7 @@ void loading(void) {
     int a = 25; int b = 11;
     int n = 1;
     
-    mvprintw(23, 3, "Loading . . .");
+    mvprintw(23, 7, "Loading . . .");
 
     while (1) {   
         mvprintw(25, 3, "             ");
@@ -463,43 +463,51 @@ void loading(void) {
         
         if (n%8 == 1){
             mvaddch(a, b++, ' ');
-            mvaddch(a, b, '#');
-            mvaddch(a, b+1, '#');
+            mvaddch(a, b-1, '.');
+            mvaddch(a, b, 'o');
+            mvaddch(a, b+1, 'O');
         }
         else if (n%8 == 2) {
             mvaddch(a, b++, ' ');
-            mvaddch(a, b, '#');
-            mvaddch(a+1, b, '#');
+            mvaddch(a, b-1, '.');
+            mvaddch(a, b, 'o');
+            mvaddch(a+1, b, 'O');
         }
         else if (n%8 == 3) {
             mvaddch(a++, b, ' ');
-            mvaddch(a, b, '#');
-            mvaddch(a+1, b, '#');
+            mvaddch(a-1, b, '.');
+            mvaddch(a, b, 'o');
+            mvaddch(a+1, b, 'O');
         }
         else if (n%8 == 4) {
             mvaddch(a++, b, ' ');
-            mvaddch(a, b, '#');
-            mvaddch(a, b-1, '#');
+            mvaddch(a-1, b, '.');
+            mvaddch(a, b, 'o');
+            mvaddch(a, b-1, 'O');
         }
         else if (n%8 == 5) {
             mvaddch(a, b--, ' ');
-            mvaddch(a, b, '#');
-            mvaddch(a, b-1, '#');
+            mvaddch(a, b+1, '.');
+            mvaddch(a, b, 'o');
+            mvaddch(a, b-1, 'O');
         }
         else if (n%8 == 6) {
             mvaddch(a, b--, ' ');
-            mvaddch(a, b, '#');
-            mvaddch(a-1, b, '#');
+            mvaddch(a, b+1, '.');
+            mvaddch(a, b, 'o');
+            mvaddch(a-1, b, 'O');
         }        
         else if (n%8 == 7) {
             mvaddch(a--, b, ' ');
-            mvaddch(a, b, '#');
-            mvaddch(a-1, b, '#');
+            mvaddch(a+1, b, '.');
+            mvaddch(a, b, 'o');
+            mvaddch(a-1, b, 'O');
         }
         else if (n%8 == 0) {
             mvaddch(a--, b, ' ');
-            mvaddch(a, b, '#');
-            mvaddch(a, b+1, '#');
+            mvaddch(a+1, b, '.');
+            mvaddch(a, b, 'o');
+            mvaddch(a, b+1, 'O');
         }
         
         refresh();
@@ -557,6 +565,7 @@ void auto_mode_game(int level) {
     mvprintw(23, 3, "Actual run time :");
     attroff(COLOR_PAIR(3));
     mvprintw(24, 3, running_time_text);
+    mvprintw(24, 11, "'s");
 
     attron(COLOR_PAIR(3));
     mvprintw(26, 3, "Solution :");
