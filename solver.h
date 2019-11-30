@@ -6,6 +6,7 @@
 
 #include <sys/time.h>
 #include <iostream>
+#include <stdio.h>
 #include <sstream>
 #include <deque>
 #include <thread>

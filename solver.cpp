@@ -4,11 +4,13 @@
 
 #include "solver.h"
 #include "game.h"
+#include <typeinfo> 
 
 #define MOVE_COST 1
 #define PUSH_COST 1
 
 using namespace std;
+bool isloading = false;
 
 int heuristics(const _t_state &cur_state) {
     queue <_t_state> valid_moves;
@@ -447,12 +449,15 @@ void loading(void) {
     curs_set(0);
 
 
-    int a = 5; int b = 10;
+    int a = 29; int b = 11;
     int n = 1;
+    mvprintw(27, 3, "Loading . . .");
 
     while (1) {   
-
-        mvprintw(10, 5, "Loading . . .");        
+        mvprintw(29, 3, "             ");
+        mvprintw(30, 3, "             ");
+        mvprintw(31, 3, "             ");
+        if(isloading) break;
         
         if (n%8 == 1){
             mvaddch(a, b++, ' ');
@@ -500,8 +505,6 @@ void loading(void) {
 
         n++;
     }
-    getch();
-    endwin();
 }
 
 void auto_mode_game(void) {
@@ -529,14 +532,43 @@ void auto_mode_game(void) {
     thread loading_thread(loading);
     gettimeofday(&start, NULL);
     _t_search_state final_stat = a_start(init_state);
+    isloading = true;
     gettimeofday(&end, NULL);
     loading_thread.join();
 
 ////    //substring used to remove ending ', ' in string
-    std::cout << "  Solution: " << std::endl;
-    std::cout << "    "
-              << final_stat.node.move_list.substr(0, (final_stat.node.move_list.size()))
-              << std::endl;
+
+    start_color();
+    init_pair(3, COLOR_CYAN, COLOR_WHITE);
+
+    sec = end.tv_sec - start.tv_sec;
+    microsec = end.tv_usec - start.tv_usec;
+    double running_time = sec + (microsec / 1000000.0);
+    char running_time_text[1000] = "";
+    sprintf(running_time_text, "%f", running_time);
+
+    attron(COLOR_PAIR(3));
+    mvprintw(27, 3, "Actual run time :");
+    attroff(COLOR_PAIR(3));
+    mvprintw(28, 3, running_time_text);
+
+    attron(COLOR_PAIR(3));
+    mvprintw(30, 3, "Solution :");
+    attroff(COLOR_PAIR(3));
+
+    char ch[1000] = "";
+
+    strcpy(ch, final_stat.node.move_list.substr(0, (final_stat.node.move_list.size())).c_str());
+
+    int c_len = strlen(ch);
+    int line = 0;
+    for(int i=0; i<c_len + 20; i+=20) {
+        char b[100] = {0, };
+        strncpy(b, (ch + 20 * line), 20);
+        mvprintw(31 + line, 3, b);
+        line += 1;
+    }
+
 //    std::cout << "    # of nodes generated: ";
 //    std::cout << final_stat.node_count << std::endl;
 //    std::cout << "    # of duplicate states generated: ";
@@ -546,10 +578,7 @@ void auto_mode_game(void) {
 //    std::cout << "    # of explored nodes: ";
 //    std::cout << final_stat.explored_count << std::endl;
 //    //report search algorithm runtime
-    std::cout << "  Actual run time: ";
-    sec = end.tv_sec - start.tv_sec;
-    microsec = end.tv_usec - start.tv_usec;
-    std::cout << (sec + (microsec / 1000000.0)) << " seconds" << std::endl;
+
 
     int pos = 0;
     int prev = 0;
