@@ -363,18 +363,8 @@ void Game::pushRefresh(WINDOW *win, int push) {
     wrefresh(win_push);
 }
 
-void Game::lifeRefresh() {
-    s.lifeDown();
-    mvwprintw(win_life, 2, 3, "%d", s.getLife());
-    wrefresh(win_life);
-}
-
-int Game::getLife() {
-    return s.getLife();
-}
-
 void Game::clearMap() {
-    win_clear = newwin(40, 27, 0, 0);
+    win_clear = newwin(32, 27, 0, 0);
     wattron(win_clear, COLOR_PAIR(2));
     wborder(win_clear, '*', '*', '*', '*', '*', '*', '*', '*');
     mvwprintw(win_clear, 5, 6, "CONGRATULATIONS!");
@@ -389,7 +379,7 @@ void Game::clearMap() {
 }
 
 void Game::reloadMap() {
-    resize_term(40, 27);
+    resize_term(32, 27);
     attron(COLOR_PAIR(2));
     border('*', '*', '*', '*', '*', '*', '*', '*');
     mvprintw(2, 7, "push box game");
@@ -405,18 +395,14 @@ void Game::reloadMap() {
     wborder(win_step, '|', '|', '-', '-', '+', '+', '+', '+');
     mvwprintw(win_step, 1, 1, "Step");
     mvwprintw(win_step, 2, 3, "%d", s.getStep());
-    win_life = newwin(4, 7, 22, 10);
-    wborder(win_life, '|', '|', '-', '-', '+', '+', '+', '+');
-    mvwprintw(win_life, 1, 1, "Life");
-    mvwprintw(win_life, 2, 3, "%d", s.getLife());
+
     refresh();
-    wrefresh(win_life);
     wrefresh(win_push);
     wrefresh(win_step);
 }
 
 void Game::ending() {
-    win_end = newwin(40, 27, 0, 0);
+    win_end = newwin(32, 27, 0, 0);
     wattron(win_end, COLOR_PAIR(2));
     wborder(win_end, '*', '*', '*', '*', '*', '*', '*', '*');
     mvwprintw(win_end, 5, 6, "CONGRATULATIONS!");
@@ -430,7 +416,7 @@ void Game::ending() {
 }
 
 void Game::gameOver() {
-    win_over = newwin(40, 27, 0, 0);
+    win_over = newwin(32, 27, 0, 0);
     wattron(win_over, COLOR_PAIR(2));
     wborder(win_over, '*', '*', '*', '*', '*', '*', '*', '*');
     mvwprintw(win_over, 5, 9, "GAME OVER!");

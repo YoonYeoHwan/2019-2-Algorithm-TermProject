@@ -450,14 +450,14 @@ void loading(void) {
     curs_set(0);
 
 
-    int a = 29; int b = 11;
+    int a = 25; int b = 11;
     int n = 1;
-    mvprintw(27, 3, "Loading . . .");
+    mvprintw(23, 3, "Loading . . .");
 
     while (1) {   
-        mvprintw(29, 3, "             ");
-        mvprintw(30, 3, "             ");
-        mvprintw(31, 3, "             ");
+        mvprintw(25, 3, "             ");
+        mvprintw(26, 3, "             ");
+        mvprintw(27, 3, "             ");
         if(isloading) break;
         
         if (n%8 == 1){
@@ -547,12 +547,12 @@ void auto_mode_game(int level) {
     sprintf(running_time_text, "%f", running_time);
 
     attron(COLOR_PAIR(3));
-    mvprintw(27, 3, "Actual run time :");
+    mvprintw(23, 3, "Actual run time :");
     attroff(COLOR_PAIR(3));
-    mvprintw(28, 3, running_time_text);
+    mvprintw(24, 3, running_time_text);
 
     attron(COLOR_PAIR(3));
-    mvprintw(30, 3, "Solution :");
+    mvprintw(26, 3, "Solution :");
     attroff(COLOR_PAIR(3));
 
 //    std::cout << "    # of nodes generated: ";
@@ -599,10 +599,10 @@ void auto_mode_game(int level) {
             for(int j=0; j< b_len; j++) {
                 if(i + j == pos) {
                     attron(COLOR_PAIR(3));
-                    mvaddch(31 + line, 3 + j, b[j]);
+                    mvaddch(27 + line, 3 + j, b[j]);
                     attroff(COLOR_PAIR(3));
                 } else {
-                    mvaddch(31 + line, 3 + j, b[j]);
+                    mvaddch(27 + line, 3 + j, b[j]);
                 }
             }
             line += 1;
