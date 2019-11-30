@@ -68,6 +68,7 @@ int heuristics(const _t_state &cur_state) {
                 bool corner_w = false;
                 int level_map_size = level_map[cur_box_y].size();
                 for (int i = cur_box_x + 1; i < level_map_size; i++) {
+
                     if ((level_map[cur_box_y][i] == '.') ||
                         (level_map[cur_box_y][i] == '*') ||
                         (level_map[cur_box_y][i] == '+') ||
@@ -556,19 +557,6 @@ void auto_mode_game(void) {
     mvprintw(30, 3, "Solution :");
     attroff(COLOR_PAIR(3));
 
-    char ch[1000] = "";
-
-    strcpy(ch, final_stat.node.move_list.substr(0, (final_stat.node.move_list.size())).c_str());
-
-    int c_len = strlen(ch);
-    int line = 0;
-    for(int i=0; i<c_len + 20; i+=20) {
-        char b[100] = {0, };
-        strncpy(b, (ch + 20 * line), 20);
-        mvprintw(31 + line, 3, b);
-        line += 1;
-    }
-
 //    std::cout << "    # of nodes generated: ";
 //    std::cout << final_stat.node_count << std::endl;
 //    std::cout << "    # of duplicate states generated: ";
@@ -579,30 +567,49 @@ void auto_mode_game(void) {
 //    std::cout << final_stat.explored_count << std::endl;
 //    //report search algorithm runtime
 
-
     int pos = 0;
     int prev = 0;
     int length = final_stat.node.move_list.size();
+    refresh();
 
-//    cout << final_stat.node.move_list.size() << endl;
+    start_color();
+    init_pair(3, COLOR_RED, COLOR_WHITE);
 
     // bool checkF1 = false;
     while (true) {
-        int inputKey = getch();
-
-        if (inputKey == 'q') {
-            return;
-        }
+        usleep(100000);
 
         prev = pos;
 
         if (0 <= pos && pos < length) {
-            if (inputKey == KEY_RIGHT) {
-                pos++;
-            }
+            pos++;
+        } else {
+            break;
         }
 
         char command = final_stat.node.move_list[prev];
+        char ch[1000] = "";
+
+        strcpy(ch, final_stat.node.move_list.substr(0, (final_stat.node.move_list.size())).c_str());
+
+        int c_len = strlen(ch);
+        int line = 0;
+        for(int i=0; i<c_len + 20; i+=20) {
+            char b[100] = "";
+            strncpy(b, (ch + 20 * line), 20);
+            int b_len = strlen(b);
+            for(int j=0; j< b_len; j++) {
+                if(i + j == pos) {
+                    attron(COLOR_PAIR(3));
+                    mvaddch(31 + line, 3 + j, b[j]);
+                    attroff(COLOR_PAIR(3));
+                } else {
+                    mvaddch(31 + line, 3 + j, b[j]);
+                }
+            }
+            line += 1;
+        }
+        refresh();
 
         switch (command) {
             case 'u':
@@ -620,10 +627,6 @@ void auto_mode_game(void) {
             default:
                 break;
         }
-
-//        if (g.finishGame()) {
-//            break;
-//        }
     }
-
+    getch();
 }
