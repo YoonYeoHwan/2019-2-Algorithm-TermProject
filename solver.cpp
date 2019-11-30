@@ -508,10 +508,8 @@ void loading(void) {
     }
 }
 
-void auto_mode_game(void) {
+void auto_mode_game(int level) {
     Game g;
-
-    int level = 2;
 
     g.setMap(level);
     g.newGame(g.getMap());

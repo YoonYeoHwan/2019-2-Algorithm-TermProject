@@ -55,6 +55,6 @@ std::queue <_t_state> gen_valid_states(const _t_state &cur_state);
 
 _t_search_state a_start(_t_state &init_state);
 
-void auto_mode_game(void);
+void auto_mode_game(int level);
 
 #endif //INC_2019_2_ALGORITHM_TERMPROJECT_SOLVER_H
