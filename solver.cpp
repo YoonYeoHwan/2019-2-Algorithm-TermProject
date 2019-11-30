@@ -245,7 +245,6 @@ queue <_t_state> gen_valid_states(const _t_state &cur_state) {
     string line;
 
     bool found = false;
-    char box_move;
     _t_player player;
     int row = 0;
 
@@ -288,12 +287,13 @@ queue <_t_state> gen_valid_states(const _t_state &cur_state) {
             continue;
 
         new_level_map = level_map;
-        new_level_map[player.y + move.y][player.x + move.x] = next == '*' ? '+' : '@';
+        new_level_map[player.y + move.y][player.x + move.x] = (next == '*' ||
+                                                               next == '.') ? '+' : '@';
         new_level_map[player.y][player.x] = (player.state == '@') ? ' ' : '.';
 
         if (next == '$' ||
             next == '*') {
-            box_move = new_level_map[player.y + move.y * 2][player.x + move.x * 2];
+            char box_move = new_level_map[player.y + move.y * 2][player.x + move.x * 2];
 
             if (box_move == '#' ||
                 box_move == '$' ||
@@ -312,7 +312,7 @@ queue <_t_state> gen_valid_states(const _t_state &cur_state) {
         new_state.state_str = "";
         int new_level_map_size = new_level_map.size();
         for (int i = 0; i < new_level_map_size; ++i) {
-            vector<char> temp = new_level_map[i];;
+            vector<char> temp = new_level_map[i];
 
             for (vector<char>::iterator itr = temp.begin();
                  itr != temp.end(); itr++) {
@@ -574,15 +574,15 @@ void auto_mode_game(int level) {
     mvprintw(26, 3, "Solution :");
     attroff(COLOR_PAIR(3));
 
-    cout << "    # of nodes generated: ";
-    cout << final_stat.node_count << endl;
-    cout << "    # of duplicate states generated: ";
-    cout << final_stat.rep_node_count << endl;
-    cout << "    # of fringe nodes when termination occured: ";
-    cout << final_stat.fringe_node << endl;
-    cout << "    # of explored nodes: ";
-    cout << final_stat.explored_count << endl;
-    //report search algorithm runtime
+//    cout << "    # of nodes generated: ";
+//    cout << final_stat.node_count << endl;
+//    cout << "    # of duplicate states generated: ";
+//    cout << final_stat.rep_node_count << endl;
+//    cout << "    # of fringe nodes when termination occured: ";
+//    cout << final_stat.fringe_node << endl;
+//    cout << "    # of explored nodes: ";
+//    cout << final_stat.explored_count << endl;
+//    //report search algorithm runtime
 
     int pos = 0;
     int prev = 0;
