@@ -8,10 +8,14 @@
 #include <iostream>
 #include <sstream>
 #include <deque>
+#include <thread>
 #include <vector>
 #include <queue>
 #include <set>
 #include <map>
+#include <unistd.h>
+
+using std::thread;
 
 #define INC_2019_2_ALGORITHM_TERMPROJECT_SOLVER_H
 

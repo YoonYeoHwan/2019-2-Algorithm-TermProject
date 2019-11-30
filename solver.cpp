@@ -442,6 +442,68 @@ _t_search_state a_start(_t_state &init_state) {
     return report;
 }
 
+void loading(void) {
+    initscr();
+    curs_set(0);
+
+
+    int a = 5; int b = 10;
+    int n = 1;
+
+    while (1) {   
+
+        mvprintw(10, 5, "Loading . . .");        
+        
+        if (n%8 == 1){
+            mvaddch(a, b++, ' ');
+            mvaddch(a, b, '#');
+            mvaddch(a, b+1, '#');
+        }
+        else if (n%8 == 2) {
+            mvaddch(a, b++, ' ');
+            mvaddch(a, b, '#');
+            mvaddch(a+1, b, '#');
+        }
+        else if (n%8 == 3) {
+            mvaddch(a++, b, ' ');
+            mvaddch(a, b, '#');
+            mvaddch(a+1, b, '#');
+        }
+        else if (n%8 == 4) {
+            mvaddch(a++, b, ' ');
+            mvaddch(a, b, '#');
+            mvaddch(a, b-1, '#');
+        }
+        else if (n%8 == 5) {
+            mvaddch(a, b--, ' ');
+            mvaddch(a, b, '#');
+            mvaddch(a, b-1, '#');
+        }
+        else if (n%8 == 6) {
+            mvaddch(a, b--, ' ');
+            mvaddch(a, b, '#');
+            mvaddch(a-1, b, '#');
+        }        
+        else if (n%8 == 7) {
+            mvaddch(a--, b, ' ');
+            mvaddch(a, b, '#');
+            mvaddch(a-1, b, '#');
+        }
+        else if (n%8 == 0) {
+            mvaddch(a--, b, ' ');
+            mvaddch(a, b, '#');
+            mvaddch(a, b+1, '#');
+        }
+        
+        refresh();
+        usleep(100000);
+
+        n++;
+    }
+    getch();
+    endwin();
+}
+
 void auto_mode_game(void) {
     Game g;
 
@@ -464,9 +526,11 @@ void auto_mode_game(void) {
     timeval start, end;
     long sec, microsec;
 
+    thread loading_thread(loading);
     gettimeofday(&start, NULL);
     _t_search_state final_stat = a_start(init_state);
     gettimeofday(&end, NULL);
+    loading_thread.join();
 
 ////    //substring used to remove ending ', ' in string
     std::cout << "  Solution: " << std::endl;
