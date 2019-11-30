@@ -1,9 +1,9 @@
 # 2019-2-Algorithm-TermProject
 
-### Kookmin Univ, Software Dept.
+- Kookmin Univ, Software Dept.
 
-### Team : Alps
-### Member: 이정하, 서명희, 양기현, 윤여환, 이다은, 장태진
+- Team : Alps
+- Member: 이정하, 서명희, 양기현, 윤여환, 이다은, 장태진
 
 #### Report - 제안서
 https://docs.google.com/document/d/1NUaYuZj_qPV_-SQSYXU-jSbH1Ll5ZLIw8FWzQWWQTxk/edit?usp=sharing
