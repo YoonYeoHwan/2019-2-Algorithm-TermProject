@@ -364,7 +364,7 @@ void Game::pushRefresh(WINDOW *win, int push) {
 }
 
 void Game::clearMap() {
-    win_clear = newwin(32, 27, 0, 0);
+    win_clear = newwin(40, 27, 0, 0);
     wattron(win_clear, COLOR_PAIR(2));
     wborder(win_clear, '*', '*', '*', '*', '*', '*', '*', '*');
     mvwprintw(win_clear, 5, 6, "CONGRATULATIONS!");
@@ -379,7 +379,7 @@ void Game::clearMap() {
 }
 
 void Game::reloadMap() {
-    resize_term(32, 27);
+    resize_term(40, 27);
     attron(COLOR_PAIR(2));
     border('*', '*', '*', '*', '*', '*', '*', '*');
     mvprintw(2, 7, "push box game");
@@ -402,7 +402,7 @@ void Game::reloadMap() {
 }
 
 void Game::ending() {
-    win_end = newwin(32, 27, 0, 0);
+    win_end = newwin(40, 27, 0, 0);
     wattron(win_end, COLOR_PAIR(2));
     wborder(win_end, '*', '*', '*', '*', '*', '*', '*', '*');
     mvwprintw(win_end, 5, 6, "CONGRATULATIONS!");
@@ -412,18 +412,5 @@ void Game::ending() {
     wattroff(win_end, COLOR_PAIR(2));
     refresh();
     wrefresh(win_end);
-    getch();
-}
-
-void Game::gameOver() {
-    win_over = newwin(32, 27, 0, 0);
-    wattron(win_over, COLOR_PAIR(2));
-    wborder(win_over, '*', '*', '*', '*', '*', '*', '*', '*');
-    mvwprintw(win_over, 5, 9, "GAME OVER!");
-    mvwprintw(win_over, 20, 7, "PRESS ANY KEY");
-    mvwprintw(win_over, 22, 8, "TO EXIT GAME");
-    wattroff(win_over, COLOR_PAIR(2));
-    refresh();
-    wrefresh(win_over);
     getch();
 }

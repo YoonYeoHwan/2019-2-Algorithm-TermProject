@@ -25,7 +25,6 @@ private:
     WINDOW *win_step;
     WINDOW *win_clear;
     WINDOW *win_end;
-    WINDOW *win_over;
     std::stack <_t_step> stack_step;
     int map_arr[10][10];
     int a;
@@ -98,6 +97,4 @@ public:
     void reloadMap();
 
     void ending();
-
-    void gameOver();
 };

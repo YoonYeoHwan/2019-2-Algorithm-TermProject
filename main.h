@@ -19,7 +19,7 @@ MODE init_game(void) {
     init_pair(1, COLOR_WHITE, COLOR_WHITE);
     init_pair(2, COLOR_RED, COLOR_WHITE);
 
-    win_start = newwin(32, 27, 0, 0);
+    win_start = newwin(40, 27, 0, 0);
     wattron(win_start, COLOR_PAIR(2));
     wborder(win_start, '*', '*', '*', '*', '*', '*', '*', '*');
     wattroff(win_start, COLOR_PAIR(2));

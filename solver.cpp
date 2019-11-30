@@ -647,7 +647,7 @@ void auto_mode_game(int level) {
     }
 
     attron(COLOR_PAIR(3));
-    mvprintw(35, 3, "Press any Key...");
+    mvprintw(35, 5, "Press any Key...");
     attroff(COLOR_PAIR(3));
     getch();
 }
