@@ -11,6 +11,7 @@
 #include <vector>
 #include <queue>
 #include <set>
+#include <map>
 
 #define INC_2019_2_ALGORITHM_TERMPROJECT_SOLVER_H
 

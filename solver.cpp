@@ -338,15 +338,17 @@ queue <_t_state> gen_valid_states(const _t_state &cur_state) {
     return valid_moves;
 }
 
-#define MODE 1
+#define MODE 2
 
 _t_search_state a_start(_t_state &init_state) {
     deque <_t_state> open;
 
 #if MODE == 1
     vector <_t_state> closed;
-#else
+#elif MODE == 2
     set <std::string> closed;
+#else
+    map <string, bool> closed;
 #endif
 
     _t_search_state report;
@@ -365,8 +367,10 @@ _t_search_state a_start(_t_state &init_state) {
 
 #if MODE == 1
         closed.push_back(current_state);
-#else
+#elif MODE == 2
         closed.insert(current_state.state_str);
+#else
+        closed.insert(make_pair(current_state.state_str, true));
 #endif
 
 //        GOAL
@@ -404,10 +408,13 @@ _t_search_state a_start(_t_state &init_state) {
                     break;
                 }
             }
+#elif MODE == 2
+            if (closed.find(temp_state.state_str) != closed.end()) {
+                already_seen = true;
+            }
 #else
             if (closed.find(temp_state.state_str) != closed.end()) {
                 already_seen = true;
-                break;
             }
 #endif
 
