@@ -458,6 +458,10 @@ void loading(void) {
     initscr();
     curs_set(0);
 
+    timeval start, end;
+    double running_time;
+    char running_time_text[1000] = "";
+    long sec, microSec;
 
     int a = 25;
     int b = 11;
@@ -465,7 +469,16 @@ void loading(void) {
 
     mvprintw(23, 7, "Loading . . .");
 
+    gettimeofday(&start, NULL);
     while (1) {
+        gettimeofday(&end, NULL);
+        sec = end.tv_sec - start.tv_sec;
+        microSec = end.tv_usec - start.tv_usec;
+        running_time = sec + (microSec / 1000000.0);
+        sprintf(running_time_text, "");
+        sprintf(running_time_text, "%f", running_time);
+        mvprintw(30, 8, "%s's", running_time_text);
+
         mvprintw(25, 3, "             ");
         mvprintw(26, 3, "             ");
         mvprintw(27, 3, "             ");
@@ -564,6 +577,10 @@ void auto_mode_game(int level) {
     char running_time_text[1000] = "";
     sprintf(running_time_text, "%f", running_time);
 
+    for (int i = 23; i <= 36; i++) {
+        mvprintw(i, 3, "                    ");
+    }
+
     attron(COLOR_PAIR(3));
     mvprintw(23, 3, "Actual run time :");
     attroff(COLOR_PAIR(3));
@@ -651,9 +668,9 @@ void auto_mode_game(int level) {
     mvprintw(35, 5, "Press any Key...");
     attroff(COLOR_PAIR(2));
     getch();
-    
+
     // 현재는 level 11 까지 있기 때문에 level 11 클리어시 엔딩 화면 나오도록 설정.
     if (level == 11) g.ending();
-    
+
 
 }
