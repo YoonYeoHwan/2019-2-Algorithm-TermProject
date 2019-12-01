@@ -13,7 +13,7 @@ void user_mode_game(void) {
         bool checkF1 = false;
         Game g;
 
-        if (level == 10) {
+        if (level == 11) {
             g.ending();
             getch();
             endwin();
