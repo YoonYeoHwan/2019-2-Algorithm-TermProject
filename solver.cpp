@@ -522,7 +522,7 @@ void loading(void) {
 
 void auto_mode_game(int level) {
 
-    for (int i = 23; i <= 30; i++) {
+    for (int i = 23; i <= 36; i++) {
         mvprintw(i, 3, "                    ");
     }
 
