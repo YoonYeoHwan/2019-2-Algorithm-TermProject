@@ -32,11 +32,11 @@ MODE init_game(void) {
     wattroff(win_start, COLOR_PAIR(2));
     refresh();
     wrefresh(win_start);
-    int inputKey = getch();
+
+    while(1) {
+        int inputKey = getch();
+        if (inputKey == 'u') return USER;
+        else if (inputKey == 's') return AUTO;
+    }
     delwin(win_start);
-
-    if (inputKey == 'u') return USER;
-    else if (inputKey == 's') return AUTO;
-
-    return AUTO;
 }

@@ -5,12 +5,13 @@
 #include "game.h"
 
 void user_mode_game(void) {
-    Game g;
+    // Game g;
 
     int level = 1;
 
     while (1) {
         bool checkF1 = false;
+        Game g;
 
         if (level == 10) {
             g.ending();
