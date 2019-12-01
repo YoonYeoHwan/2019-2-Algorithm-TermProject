@@ -1,5 +1,6 @@
 #include <fstream>
 #include <iostream>
+#include <stdarg.h>
 #include "string.h"
 #include "map.h"
 
