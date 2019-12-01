@@ -653,13 +653,7 @@ void auto_mode_game(int level) {
     getch();
     
     // 현재는 level 11 까지 있기 때문에 level 11 클리어시 엔딩 화면 나오도록 설정.
-    // 중간 중간에는 단계 클리어 화면 나오도록 설정.
-    // 나중에 보고 필요없다 싶으면 지워도 됨.
-    if (level == 11) {
-        g.ending();
-    }
-    else {
-        g.clearMap();
-    }
+    if (level == 11) g.ending();
+    
 
 }

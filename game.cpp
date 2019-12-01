@@ -113,8 +113,6 @@ int Game::undo(void) {
 
     mvwprintw(game_map, a, b, "@");
     wrefresh(game_map);
-//    cout << a << "-" << b << endl;
-
     return 1;
 }
 
@@ -139,7 +137,7 @@ void Game::newGame(int map[][10]) {
     }
     mvwprintw(game_map, a, b, "@");
 
-    print_usermode();
+    // print_usermode();
 
     wrefresh(game_map);
 }
@@ -398,9 +396,6 @@ void Game::reloadMap() {
     wborder(win_step, '|', '|', '-', '-', '+', '+', '+', '+');
     mvwprintw(win_step, 1, 1, "Step");
     mvwprintw(win_step, 2, 3, "%d", s.getStep());
-
-    print_usermode();
-
     refresh();
     wrefresh(win_push);
     wrefresh(win_step);

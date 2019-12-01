@@ -21,6 +21,7 @@ void user_mode_game(void) {
 
         g.setMap(level++);
         g.newGame(g.getMap());
+        g.print_usermode();
 
         while (true) {
             int inputKey = getch();
