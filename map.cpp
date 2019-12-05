@@ -1,7 +1,8 @@
 #include <fstream>
 #include <iostream>
 #include <stdarg.h>
-#include "string.h"
+#include <sstream>
+#include <string>
 #include "map.h"
 
 using namespace std;
@@ -25,14 +26,33 @@ std::string format_string(const std::string fmt, ...) {
 }
 
 void mapArray::set_map(int map_arr[][10], int level, int &a, int &b, int &goalCount) {
-    ifstream input;
-    std::string filename = format_string("./mapFile/level%d.txt", level);
-    input.open(filename);
-    for (int i = 0; i < 10; i++) {
-        for (int j = 0; j < 10; j++) {
-            input >> map_arr[i][j];
+    for (int i = 0; i < 10; ++i) {
+        for (int j = 0; j < 10; ++j) {
+            map_arr[i][j] = 0;
         }
     }
-    input >> goalCount >> a >> b;
+
+    ifstream input;
+    string line;
+    std::string filename = format_string("./mapFile/level%d.txt", level);
+    input.open(filename);
+
+    getline(input, line);
+    istringstream is(line);
+    is >> a >> b;
+    a += 1;
+    b += 3;
+
+    goalCount = 0;
+    for (int r = 0; getline(input, line); r++) {
+        istringstream is(line);
+        int n;
+
+        int c = 0;
+        while (is >> n) {
+            map_arr[r][c++] = n;
+            goalCount += n == 3;
+        }
+    }
 }
 
