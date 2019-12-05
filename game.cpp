@@ -55,67 +55,6 @@ std::string Game::getStrMap(void) {
     return str_map;
 }
 
-int Game::undo(void) {
-    if (stack_step.empty()) return -1;
-    if (stack_step.size() == 1) {
-        _t_step step = stack_step.top();
-
-//        a = step.y + 0;
-//        b = step.x + 0;
-
-        return -1;
-    }
-
-    _t_step step = stack_step.top();
-    stack_step.pop();
-
-//    cout << step.y << " " << step.x << endl;
-
-    stringstream ss(step.map);
-    string line;
-
-    a = step.y + 1;
-    b = step.x + 3;
-
-    int temp_row, temp_col;
-
-    int row = 0;
-
-    game_map = newwin(12, 14, 10, 7);
-    wborder(game_map, '|', '|', '-', '-', '+', '+', '+', '+');
-
-    while (getline(ss, line, '\n')) {
-        int lineLength = line.length();
-        for (int col = 0; col < lineLength; ++col) {
-            temp_row = row + 1;
-            temp_col = col + 3;
-
-            if (line[col] == '#') {
-                map_arr[temp_row][temp_col] = WALL;
-                wattron(game_map, COLOR_PAIR(1));
-                mvwprintw(game_map, temp_row, temp_col, "#");
-                wattroff(game_map, COLOR_PAIR(1));
-            } else if (line[col] == '$') {
-                map_arr[temp_row][temp_col] = BOX;
-                mvwprintw(game_map, temp_row, temp_col, "$");
-            } else if (line[col] == ' ') {
-                map_arr[temp_row][temp_col] = SPACE;
-                mvwprintw(game_map, temp_row, temp_col, " ");
-            } else if (line[col] == '.') {
-                map_arr[temp_row][temp_col] = GOAL;
-                mvwprintw(game_map, temp_row, temp_col, ".");
-            } else if (line[col] == '@') {
-                mvwprintw(game_map, temp_row, temp_col, "@");
-            }
-        }
-        row++;
-    }
-
-    mvwprintw(game_map, a, b, "@");
-    wrefresh(game_map);
-    return 1;
-}
-
 void Game::push_step(void) {
     _t_step step = {getStrMap(), a, b};
     stack_step.push(step);
@@ -123,7 +62,7 @@ void Game::push_step(void) {
 
 void Game::newGame(int map[][10]) {
     game_map = newwin(12, 14, 10, 7);
-    wborder(game_map, '|', '|', '-', '-', '+', '+', '+', '+');
+    wborder(game_map, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
     for (int i = 0; i < 10; i++) {
         for (int j = 0; j < 10; j++) {
             if (map[i][j] == 1) {
@@ -131,7 +70,9 @@ void Game::newGame(int map[][10]) {
                 mvwprintw(game_map, i + 1, j + 3, "#");
                 wattroff(game_map, COLOR_PAIR(1));
             } else if (map[i][j] == 2) {
+                wattron(game_map, COLOR_PAIR(5));
                 mvwprintw(game_map, i + 1, j + 3, "$");
+                wattroff(game_map, COLOR_PAIR(5));
             } else if (map[i][j] == 3) {
                 mvwprintw(game_map, i + 1, j + 3, ".");
             } else mvwprintw(game_map, i + 1, j + 3, " ");
@@ -154,12 +95,16 @@ void Game::moveUP(int map[][10]) {
         else {
             if (map[up2][b - 3] == GOAL) {
                 s.pushUp();
+                wattron(game_map, COLOR_PAIR(5));
                 mvwprintw(game_map, a - 2, b, "$");
+                wattroff(game_map, COLOR_PAIR(5));
                 map[up2][b - 3] = BOX_ON_GOAL;
                 map[up][b - 3] = SPACE;
             } else {
                 s.pushUp();
+                wattron(game_map, COLOR_PAIR(5));
                 mvwprintw(game_map, a - 2, b, "$");
+                wattroff(game_map, COLOR_PAIR(5));
                 map[up2][b - 3] = BOX;
                 map[up][b - 3] = SPACE;
             }
@@ -170,12 +115,16 @@ void Game::moveUP(int map[][10]) {
         else {
             if (map[up2][b - 3] == GOAL) {
                 s.pushUp();
+                wattron(game_map, COLOR_PAIR(5));
                 mvwprintw(game_map, a - 2, b, "$");
+                wattroff(game_map, COLOR_PAIR(5));
                 map[up2][b - 3] = BOX_ON_GOAL;
                 map[up][b - 3] = GOAL;
             } else {
                 s.pushUp();
+                wattron(game_map, COLOR_PAIR(5));
                 mvwprintw(game_map, a - 2, b, "$");
+                wattroff(game_map, COLOR_PAIR(5));
                 map[up2][b - 3] = BOX;
                 map[up][b - 3] = GOAL;
             }
@@ -184,6 +133,13 @@ void Game::moveUP(int map[][10]) {
     }
     if (map[a - 1][b - 3] == GOAL) mvwprintw(game_map, a, b, ".");
     else if (map[a - 1][b - 3] == SPACE) mvwprintw(game_map, a, b, " ");
+
+    if (map[up2][b - 3] == BOX_ON_GOAL) {
+        wattron(game_map, COLOR_PAIR(6));
+        mvwprintw(game_map, a - 2, b, "$");
+        wattroff(game_map, COLOR_PAIR(6));
+    }
+
     a--;
     s.stepUp();
     mvwprintw(game_map, a, b, "@");
@@ -204,12 +160,16 @@ void Game::moveDOWN(int map[][10]) {
         else {
             if (map[down2][b - 3] == GOAL) {
                 s.pushUp();
+                wattron(game_map, COLOR_PAIR(5));
                 mvwprintw(game_map, a + 2, b, "$");
+                wattroff(game_map, COLOR_PAIR(5));
                 map[down2][b - 3] = BOX_ON_GOAL;
                 map[down][b - 3] = SPACE;
             } else {
                 s.pushUp();
+                wattron(game_map, COLOR_PAIR(5));
                 mvwprintw(game_map, a + 2, b, "$");
+                wattroff(game_map, COLOR_PAIR(5));
                 map[down2][b - 3] = BOX;
                 map[down][b - 3] = SPACE;
             }
@@ -220,12 +180,16 @@ void Game::moveDOWN(int map[][10]) {
         else {
             if (map[down2][b - 3] == GOAL) {
                 s.pushUp();
+                wattron(game_map, COLOR_PAIR(5));
                 mvwprintw(game_map, a + 2, b, "$");
+                wattroff(game_map, COLOR_PAIR(5));
                 map[down2][b - 3] = BOX_ON_GOAL;
                 map[down][b - 3] = GOAL;
             } else {
                 s.pushUp();
+                wattron(game_map, COLOR_PAIR(5));
                 mvwprintw(game_map, a + 2, b, "$");
+                wattroff(game_map, COLOR_PAIR(5));
                 map[down2][b - 3] = BOX;
                 map[down][b - 3] = GOAL;
             }
@@ -235,6 +199,13 @@ void Game::moveDOWN(int map[][10]) {
 
     if (map[a - 1][b - 3] == GOAL) mvwprintw(game_map, a, b, ".");
     else if (map[a - 1][b - 3] == SPACE) mvwprintw(game_map, a, b, " ");
+
+    if (map[down2][b - 3] == BOX_ON_GOAL) {
+        wattron(game_map, COLOR_PAIR(6));
+        mvwprintw(game_map, a + 2, b, "$");
+        wattroff(game_map, COLOR_PAIR(6));
+    }
+
     a++;
     s.stepUp();
     mvwprintw(game_map, a, b, "@");
@@ -255,12 +226,16 @@ void Game::moveLEFT(int map[][10]) {
         else {
             if (map[a - 1][left2] == GOAL) {
                 s.pushUp();
+                wattron(game_map, COLOR_PAIR(5));
                 mvwprintw(game_map, a, b - 2, "$");
+                wattroff(game_map, COLOR_PAIR(5));
                 map[a - 1][left2] = BOX_ON_GOAL;
                 map[a - 1][left] = SPACE;
             } else {
                 s.pushUp();
+                wattron(game_map, COLOR_PAIR(5));
                 mvwprintw(game_map, a, b - 2, "$");
+                wattroff(game_map, COLOR_PAIR(5));
                 map[a - 1][left2] = BOX;
                 map[a - 1][left] = SPACE;
             }
@@ -271,12 +246,16 @@ void Game::moveLEFT(int map[][10]) {
         else {
             if (map[a - 1][left2] == GOAL) {
                 s.pushUp();
+                wattron(game_map, COLOR_PAIR(5));
                 mvwprintw(game_map, a, b - 2, "$");
+                wattroff(game_map, COLOR_PAIR(5));
                 map[a - 1][left2] = BOX_ON_GOAL;
                 map[a - 1][left] = GOAL;
             } else {
                 s.pushUp();
+                wattron(game_map, COLOR_PAIR(5));
                 mvwprintw(game_map, a, b - 2, "$");
+                wattroff(game_map, COLOR_PAIR(5));
                 map[a - 1][left2] = BOX;
                 map[a - 1][left] = GOAL;
             }
@@ -285,6 +264,13 @@ void Game::moveLEFT(int map[][10]) {
     }
     if (map[a - 1][b - 3] == GOAL) mvwprintw(game_map, a, b, ".");
     else if (map[a - 1][b - 3] == SPACE) mvwprintw(game_map, a, b, " ");
+
+    if (map[a - 1][left2] == BOX_ON_GOAL) {
+        wattron(game_map, COLOR_PAIR(6));
+        mvwprintw(game_map, a, b - 2, "$");
+        wattroff(game_map, COLOR_PAIR(6));
+    }
+
     b--;
     s.stepUp();
     mvwprintw(game_map, a, b, "@");
@@ -305,12 +291,16 @@ void Game::moveRIGHT(int map[][10]) {
         else {
             if (map[a - 1][right2] == GOAL) {
                 s.pushUp();
+                wattron(game_map, COLOR_PAIR(5));
                 mvwprintw(game_map, a, b + 2, "$");
+                wattroff(game_map, COLOR_PAIR(5));
                 map[a - 1][right2] = BOX_ON_GOAL;
                 map[a - 1][right] = SPACE;
             } else {
                 s.pushUp();
+                wattron(game_map, COLOR_PAIR(5));
                 mvwprintw(game_map, a, b + 2, "$");
+                wattroff(game_map, COLOR_PAIR(5));
                 map[a - 1][right2] = BOX;
                 map[a - 1][right] = SPACE;
             }
@@ -321,12 +311,16 @@ void Game::moveRIGHT(int map[][10]) {
         else {
             if (map[a - 1][right2] == GOAL) {
                 s.pushUp();
+                wattron(game_map, COLOR_PAIR(5));
                 mvwprintw(game_map, a, b + 2, "$");
+                wattroff(game_map, COLOR_PAIR(5));
                 map[a - 1][right2] = BOX_ON_GOAL;
                 map[a - 1][right] = GOAL;
             } else {
                 s.pushUp();
+                wattron(game_map, COLOR_PAIR(5));
                 mvwprintw(game_map, a, b + 2, "$");
+                wattroff(game_map, COLOR_PAIR(5));
                 map[a - 1][right2] = BOX;
                 map[a - 1][right] = GOAL;
             }
@@ -335,6 +329,13 @@ void Game::moveRIGHT(int map[][10]) {
     }
     if (map[a - 1][b - 3] == GOAL) mvwprintw(game_map, a, b, ".");
     else if (map[a - 1][b - 3] == SPACE) mvwprintw(game_map, a, b, " ");
+
+    if (map[a - 1][right2] == BOX_ON_GOAL) {
+        wattron(game_map, COLOR_PAIR(6));
+        mvwprintw(game_map, a, b + 2, "$");
+        wattroff(game_map, COLOR_PAIR(6));
+    }
+
     b++;
     s.stepUp();
     mvwprintw(game_map, a, b, "@");
@@ -388,14 +389,14 @@ void Game::reloadMap() {
     mvprintw(2, 7, "push box game");
     attroff(COLOR_PAIR(2));
     win_level = newwin(4, 7, 4, 2);
-    wborder(win_level, '|', '|', '-', '-', '+', '+', '+', '+');
+    wborder(win_level, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
     mvwprintw(win_level, 1, 1, "Level");
     win_push = newwin(4, 7, 4, 10);
-    wborder(win_push, '|', '|', '-', '-', '+', '+', '+', '+');
+    wborder(win_push, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
     mvwprintw(win_push, 1, 1, "Push");
     mvwprintw(win_push, 2, 3, "%d", s.getPush());
     win_step = newwin(4, 7, 4, 18);
-    wborder(win_step, '|', '|', '-', '-', '+', '+', '+', '+');
+    wborder(win_step, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
     mvwprintw(win_step, 1, 1, "Step");
     mvwprintw(win_step, 2, 3, "%d", s.getStep());
     refresh();

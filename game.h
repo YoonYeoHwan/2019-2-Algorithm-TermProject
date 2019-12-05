@@ -41,6 +41,8 @@ public:
         init_pair(2, COLOR_RED, COLOR_WHITE);
         init_pair(3, COLOR_CYAN, COLOR_WHITE);
         init_pair(4, COLOR_RED, COLOR_RED);
+        init_pair(5, COLOR_GREEN, COLOR_GREEN);
+        init_pair(6, COLOR_WHITE, COLOR_BLACK);
 
         resize_term(40, 27);
         attron(COLOR_PAIR(2));
@@ -50,15 +52,15 @@ public:
         attroff(COLOR_PAIR(2));
 
         win_level = newwin(4, 7, 4, 2);
-        wborder(win_level, '|', '|', '-', '-', '+', '+', '+', '+');
+        wborder(win_level, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
         mvwprintw(win_level, 1, 1, "Level");
         mvwprintw(win_level, 2, 3, "1");
         win_push = newwin(4, 7, 4, 10);
-        wborder(win_push, '|', '|', '-', '-', '+', '+', '+', '+');
+        wborder(win_push, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
         mvwprintw(win_push, 1, 1, "Push");
         mvwprintw(win_push, 2, 3, "0");
         win_step = newwin(4, 7, 4, 18);
-        wborder(win_step, '|', '|', '-', '-', '+', '+', '+', '+');
+        wborder(win_step, ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ');
         mvwprintw(win_step, 1, 1, "Step");
         mvwprintw(win_step, 2, 3, "0");
 
@@ -67,8 +69,6 @@ public:
         wrefresh(win_push);
         wrefresh(win_step);
     }
-
-    int undo(void);
 
     void push_step(void);
 
