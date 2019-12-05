@@ -130,9 +130,11 @@ void Game::newGame(int map[][10]) {
                 wattron(game_map, COLOR_PAIR(1));
                 mvwprintw(game_map, i + 1, j + 3, "#");
                 wattroff(game_map, COLOR_PAIR(1));
-            } else if (map[i][j] == 2) mvwprintw(game_map, i + 1, j + 3, "$");
-            else if (map[i][j] == 3) mvwprintw(game_map, i + 1, j + 3, ".");
-            else mvwprintw(game_map, i + 1, j + 3, " ");
+            } else if (map[i][j] == 2) {
+                mvwprintw(game_map, i + 1, j + 3, "$");
+            } else if (map[i][j] == 3) {
+                mvwprintw(game_map, i + 1, j + 3, ".");
+            } else mvwprintw(game_map, i + 1, j + 3, " ");
         }
     }
     mvwprintw(game_map, a, b, "@");

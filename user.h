@@ -5,6 +5,6 @@
 #ifndef INC_2019_2_ALGORITHM_TERMPROJECT_USER_H
 #define INC_2019_2_ALGORITHM_TERMPROJECT_USER_H
 
-void user_mode_game(void);
+void user_mode_game(int final_level);
 
 #endif //INC_2019_2_ALGORITHM_TERMPROJECT_USER_H

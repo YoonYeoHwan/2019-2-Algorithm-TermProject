@@ -4,16 +4,17 @@
 #include "user.h"
 #include "game.h"
 
-void user_mode_game(void) {
+void user_mode_game(int final_level) {
     // Game g;
 
     int level = 1;
+    final_level += 1;
 
     while (1) {
         bool checkF1 = false;
         Game g;
 
-        if (level == 11) {
+        if (level == final_level) {
             g.ending();
             getch();
             endwin();
@@ -63,7 +64,8 @@ void user_mode_game(void) {
                 }
             }
         }
-        if (level != 10 && !checkF1) {
+
+        if (level != final_level && !checkF1) {
             g.clearMap();
             g.reloadMap();
         }
